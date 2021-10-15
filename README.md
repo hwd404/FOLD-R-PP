@@ -1,7 +1,7 @@
 # FOLD-R-PP
 The implementation of FOLD-R++ algorithm. The target of FOLD-R++ algorithm is to learn an answer set program for a classification task.
 
-## Install
+## Installation
 ### Prerequisites
 FOLD-R++ is developed with only python3. Numpy is the only dependency:
 <code>
@@ -44,7 +44,7 @@ We got a rule set **rules1** with intermediate representation, then:
     for r in rule_set:
         print(r)
 </code>
-An answer set program that is compatible with s(CASP) is listed as below.
+The training process can be started with <pre> python3 main.py </pre>. An answer set program that is compatible with s(CASP) is listed as below.
 <code>
 
 	% breastw dataset (699, 10).
@@ -73,4 +73,4 @@ An answer set program that is compatible with s(CASP) is listed as below.
 
 ### s(CASP)
 
-All the resources of s(CASP) can be found at https://gitlab.software.imdea.org/ciao- lang/sCASP.
+All the resources of s(CASP) can be found at https://gitlab.software.imdea.org/ciao-lang/sCASP.
