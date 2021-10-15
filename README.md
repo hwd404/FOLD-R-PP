@@ -70,13 +70,13 @@ An answer set program that is compatible with s(CASP) is listed as below.
 	
 	label(X,'benign'):- bare_nuclei(X,'?').
 	label(X,'benign'):- bland_chromatin(X,N6), N6=<4.0,
-						clump_thickness(X,N0), N0=<6.0,  
-	                	bare_nuclei(X,N5), N5=<1.0, not ab7(X).   
+			    clump_thickness(X,N0), N0=<6.0,  
+	                    bare_nuclei(X,N5), N5=<1.0, not ab7(X).   
 	label(X,'benign'):- cell_size_uniformity(X,N1), N1=<2.0,
-						not ab3(X), not ab5(X), not ab6(X).  
+			    not ab3(X), not ab5(X), not ab6(X).  
 	label(X,'benign'):- cell_size_uniformity(X,N1), N1=<4.0,
-						bare_nuclei(X,N5), N5=<3.0,
-						clump_thickness(X,N0), N0=<3.0, not ab8(X).  
+			    bare_nuclei(X,N5), N5=<3.0,
+			    clump_thickness(X,N0), N0=<3.0, not ab8(X).  
 	ab2(X):- clump_thickness(X,N0), N0=<1.0.  
 	ab3(X):- bare_nuclei(X,N5), N5>5.0, not ab2(X).  
 	ab4(X):- cell_shape_uniformity(X,N2), N2=<1.0.  
