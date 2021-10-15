@@ -44,7 +44,7 @@ We got a rule set **rules1** with intermediate representation, then:
     for r in rule_set:
         print(r)
 </code>
-The training process can be started with <pre> python3 main.py </pre>. An answer set program that is compatible with s(CASP) is listed as below.
+The training process can be started with: <pre> python3 main.py </pre> An answer set program that is compatible with s(CASP) is listed as below.
 <code>
 
 	% breastw dataset (699, 10).
