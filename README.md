@@ -158,3 +158,18 @@ Here is an example of testing data predicates along with the answer set program 
 ### s(CASP)
 
 All the resources of s(CASP) can be found at https://gitlab.software.imdea.org/ciao-lang/sCASP.
+
+### Citation
+
+<code>
+	
+	@misc{wang2021foldr,
+	      title={FOLD-R++: A Toolset for Automated Inductive Learning of Default Theories from Mixed Data}, 
+	      author={Huaduo Wang and Gopal Gupta},
+	      year={2021},
+	      eprint={2110.07843},
+	      archivePrefix={arXiv},
+	      primaryClass={cs.LG}
+	}
+
+</code>
