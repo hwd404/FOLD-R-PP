@@ -13,14 +13,14 @@ FOLD-R++ is developed with only python3. Numpy is the only dependency:
 ## Instruction
 ### Data preparation
 
-The FOLD-R++ algorithm takes tabular data as input, the first line for the tabular data should be the feature name for each column.
-The FOLD-R++ does not need encoding for training data. It can deal with numeric, categorical, and even mixed features (one column contains categorical and numeric values) directly.
-But, the numeric features should be specified before loading data, otherwise they would be dealt like categorical features (only equality literals would be generated).
+The FOLD-R++ algorithm takes tabular data as input, the first line for the tabular data should be the feature names of each column.
+The FOLD-R++ does not need encoding for training. It can deal with numeric, categorical, and even mixed type features (one column contains categorical and numeric values) directly.
+But, the numeric features should be specified before loading data, otherwise they would be dealt like categorical features (only literals with = and != would be generated).
 
-There are many UCI datasets can be found in the **data** directory, and the data preparation code pieces should be added to datasets.py.
+There are many UCI datasets can be found in the **data** directory, and the code pieces of data preparation should be added to datasets.py.
 
 
-For example, the UCI breast-w dataset can be loaded with the following code.
+For example, the UCI breast-w dataset can be loaded with the following code:
 
 <code>
 	
@@ -34,7 +34,7 @@ For example, the UCI breast-w dataset can be loaded with the following code.
 **columns** lists all the features needed, **nums** lists all the numeric features, **label** implies the feature name of the label, **pos** indicates the positive value of the label.
 
 ### Training
-The FOLD-R++ algorithm generates an explainable model that is represented with an answer set program for classification tasks. Here's an example for breast-w dataset:
+The FOLD-R++ algorithm generates an explainable model that is represented with an answer set program for classification tasks. Here's an training example for breast-w dataset:
 
 <code>
 	
@@ -44,7 +44,7 @@ The FOLD-R++ algorithm generates an explainable model that is represented with a
 	
 </code>
 
-We got a rule set **rules1** with intermediate representation, then: 
+We have got a rule set **rules1** in a nested intermediate representation. Flatten and decode the nested rules to answer set program: 
 
 <code>
 	
@@ -61,7 +61,7 @@ The training process can be started with:
 
 </code>
 
-An answer set program that is compatible with s(CASP) is listed as below.
+An answer set program that is compatible with s(CASP) is generated as below.
 
 <code>
 	
@@ -91,14 +91,14 @@ An answer set program that is compatible with s(CASP) is listed as below.
 </code>
 
 ### Testing in Python
-The testing data can be predicted with the **predict** function in Python. 
+The testing data **X_test**, a set of testing data, can be predicted with the **predict** function in Python. 
 
 <code>
 	Y_test_hat = predict(rules1, X_test)
 
 </code>
 
-The **classify** function can also be used for a single data.
+The **classify** function can also be used to classify a single data.
 	
 <code>
 	y_test_hat = classify(rules1, x_test)
@@ -116,7 +116,7 @@ The **decode_test_data** function can be used for generating predicates for test
 	    print(p)
 </code>
 
-Here is an example of testing data predicates along with the answer set program for acute dataset:
+Here is an example of generated testing data predicates along with the answer set program for acute dataset:
 
 <code>
 	
