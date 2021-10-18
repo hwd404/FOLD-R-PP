@@ -159,7 +159,7 @@ Here is an example of testing data predicates along with the answer set program 
 
 All the resources of s(CASP) can be found at https://gitlab.software.imdea.org/ciao-lang/sCASP.
 
-### Citation
+## Citation
 
 <code>
 	
