@@ -141,10 +141,10 @@ def best_feat(X_pos, X_neg, used_items=[]):
     return i, r, v
 
 
-def foldrpp(X_pos, X_neg, used_items=[]):
+def foldrpp(X_pos, X_neg, used_items=[], ratio=0.5):
     ret = []
     while len(X_pos) > 0:
-        rule = learn_rule(X_pos, X_neg, used_items)
+        rule = learn_rule(X_pos, X_neg, used_items, ratio)
         tp = [i for i in range(len(X_pos)) if cover(rule, X_pos[i], 1)]
         X_pos = [X_pos[i] for i in range(len(X_pos)) if i not in set(tp)]
         if len(tp) == 0:
@@ -153,7 +153,7 @@ def foldrpp(X_pos, X_neg, used_items=[]):
     return ret
 
 
-def learn_rule(X_pos, X_neg, used_items=[]):
+def learn_rule(X_pos, X_neg, used_items=[], ratio=0.5):
     items = []
     flag = False
     while True:
@@ -162,7 +162,7 @@ def learn_rule(X_pos, X_neg, used_items=[]):
         rule = (-1, items, [], 0)
         X_tp = [X_pos[i] for i in range(len(X_pos)) if cover(rule, X_pos[i], 1)]
         X_fp = [X_neg[i] for i in range(len(X_neg)) if cover(rule, X_neg[i], 1)]
-        if t[0] == -1 or len(X_fp) <= len(X_tp) * 0.5:
+        if t[0] == -1 or len(X_fp) <= len(X_tp) * ratio:
             if t[0] == -1:
                 items.pop()
                 rule = (-1, items, [], 0)
@@ -172,7 +172,7 @@ def learn_rule(X_pos, X_neg, used_items=[]):
         X_pos = X_tp
         X_neg = X_fp
     if flag:
-        ab = foldrpp(X_fp, X_tp, used_items + items)
+        ab = foldrpp(X_fp, X_tp, used_items + items, ratio)
         if len(ab) > 0:
             rule = (rule[0], rule[1], ab, 0)
     return rule
