@@ -61,7 +61,7 @@ def titanic():
     X_test, Y_test = split_xy(data_test)
 
     start = timer()
-    rules1 = foldrpp(X_pos, X_neg, [])
+    rules1 = foldrpp(X_pos, X_neg, [], 0.5)
     end = timer()
 
     fr1 = flatten(rules1)
