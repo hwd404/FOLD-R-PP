@@ -31,7 +31,7 @@ For example, the UCI breast-w dataset can be loaded with the following code:
 	
 </code>
 
-**columns** lists all the features needed, **nums** lists all the numerical features, **label** is the name of the output classification label, **pos** indicates the positive value of the label. For binary classification, the **label value with more examples** should be selected as positive.
+**columns** lists all the features needed, **nums** lists all the numerical features, **label** is the name of the output classification label, **pos** indicates the positive value of the label. **For binary classification tasks, the label value with more examples should be selected as positive**.
 
 ### Training
 The FOLD-R++ algorithm generates an explainable model that is represented by an answer set program for classification tasks. Here's a training example for breast-w dataset:
