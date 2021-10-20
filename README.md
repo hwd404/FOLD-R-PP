@@ -40,7 +40,7 @@ The FOLD-R++ algorithm generates an explainable model that is represented by an 
 	
     X_train, Y_train = split_xy(data_train)
     X_pos, X_neg = split_X_by_Y(X_train, Y_train)
-    rules1 = foldrpp(X_pos, X_neg, [])
+    rules1 = foldrpp(X_pos, X_neg, [], ratio=0.5)
 	
 </code>
 
