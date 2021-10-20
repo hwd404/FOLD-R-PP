@@ -172,14 +172,17 @@ All the resources of s(CASP) can be found at https://gitlab.software.imdea.org/c
 	      primaryClass={cs.LG}
 	}
 	
+</code>
+<code>
+
 	@article{DBLP:journals/corr/abs-1804-11162,
-  	      author    = {Joaqu{\'{\i}}n Arias and Manuel Carro and Elmer Salazar and Kyle Marple and Gopal Gupta},
-              title     = {Constraint Answer Set Programming without Grounding},
-              journal   = {CoRR},
-              volume    = {abs/1804.11162},
-              year      = {2018},
-              url       = {http://arxiv.org/abs/1804.11162}
-        }
+		author={Joaqu{\'{\i}}n Arias and Manuel Carro and Elmer Salazar and Kyle Marple and Gopal Gupta},
+		title={Constraint Answer Set Programming without Grounding},
+		journal={CoRR},
+		volume={abs/1804.11162},
+		year={2018},
+		url={http://arxiv.org/abs/1804.11162}
+	}
 
 </code>
 
