@@ -1,0 +1,29 @@
+#pred sex(X,Y) :: 'person @(X) is @(Y)'.
+#pred age(X,Y) :: 'person @(X) is of age @(Y)'.
+#pred number_of_sibling_spouses(X,Y) :: 'person @(X) had @(Y) siblings or spouses'.
+#pred number_of_parents_children(X,Y) :: 'person @(X) had @(Y) parents or children'.
+#pred ticket(X,Y) :: 'person @(X) had ticket of type @(Y)'.
+#pred fare(X,Y) :: 'person @(X) paid @(Y) for the ticket'.
+#pred class(X,1) :: 'person @(X) traveled in 1st class'.
+#pred class(X,2) :: 'person @(X) traveled in 2nd class'.
+#pred class(X,3) :: 'person @(X) traveled in 3rd class'.
+#pred embarked(X,Y) :: 'person @(X) embarked from @(Y)'.
+#pred survived(X) :: 'person @(X) surivived'.
+#pred ab2(X) :: 'abnormal case 2 holds for @(X)'.
+#pred ab3(X) :: 'abnormal case 3 holds for @(X)'.
+#pred ab4(X) :: 'abnormal case 4 holds for @(X)'.
+#pred ab5(X) :: 'abnormal case 5 holds for @(X)'.
+#pred ab6(X) :: 'abnormal case 6 holds for @(X)'.
+#pred ab7(X) :: 'abnormal case 7 holds for @(X)'.
+#pred ab8(X) :: 'abnormal case 8 holds for @(X)'.
+#pred ab9(X) :: 'abnormal case 9 holds for @(X)'.
+#pred ab10(X) :: 'abnormal case 10 holds for @(X)'.
+#pred ab11(X) :: 'abnormal case 11 holds for @(X)'.
+#pred ab12(X) :: 'abnormal case 12 holds for @(X)'.
+#pred ab13(X) :: 'abnormal case 13 holds for @(X)'.
+#pred ab14(X) :: 'abnormal case 14 holds for @(X)'.
+#pred ab15(X) :: 'abnormal case 15 holds for @(X)'.
+#pred ab16(X) :: 'abnormal case 16 holds for @(X)'.
+#pred ab17(X) :: 'abnormal case 17 holds for @(X)'.
+#pred ab18(X) :: 'abnormal case 18 holds for @(X)'.
+#pred ab19(X) :: 'abnormal case 19 holds for @(X)'.
