@@ -107,14 +107,14 @@ def best_ig(X_pos, X_neg, i, used_items=[]):
 
     best, v, r = float('-inf'), float('-inf'), ''
 
-    for j in range(len(xs)):
-        if (i, '<=', xs[j]) not in used_items and (i, '>', xs[j]) not in used_items:
-            ifg = ig(pos[xs[j]], xp - pos[xs[j]] + cp, xn - neg[xs[j]] + cn, neg[xs[j]])
+    for x in xs:
+        if (i, '<=', x) not in used_items and (i, '>', x) not in used_items:
+            ifg = ig(pos[x], xp - pos[x] + cp, xn - neg[x] + cn, neg[x])
             if best < ifg:
-                best, v, r = ifg, xs[j], '<='
-            ifg = ig(xp - pos[xs[j]], pos[xs[j]] + cp, neg[xs[j]] + cn, xn - neg[xs[j]])
+                best, v, r = ifg, x, '<='
+            ifg = ig(xp - pos[x], pos[x] + cp, neg[x] + cn, xn - neg[x])
             if best < ifg:
-                best, v, r = ifg, xs[j], '>'
+                best, v, r = ifg, x, '>'
 
     for c in cs:
         if (i, '==', c) not in used_items and (i, '!=', c) not in used_items:
