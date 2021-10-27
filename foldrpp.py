@@ -94,8 +94,6 @@ class Classifier:
         query = '?- goal(' + str(self.seq) + ').'
         tf.write(query.encode())
         tf.flush()
-        tf.seek(0)
-        print(tf.read().decode('utf-8'))
         self.seq += 1
         command = 'scasp' + ' -s1 --tree --human ' + tf.name
         res = subprocess.run([command], stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
