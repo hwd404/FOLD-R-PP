@@ -95,7 +95,7 @@ class Classifier:
         tf.write(query.encode())
         tf.flush()
         self.seq += 1
-        command = 'scasp' + ' -s1 --tree --human ' + tf.name
+        command = 'scasp' + ' -s1 --tree --human --short ' + tf.name
         res = subprocess.run([command], stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
         tf.close()
         return res
