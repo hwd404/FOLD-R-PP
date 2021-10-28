@@ -78,17 +78,17 @@ def split_data_pred(X, Y, X_pred, ratio=0.8, rand=True):
     return X_train, Y_train, X_test_pred
 
 
-def load_translation(model, file_name):
+def load_translation(model, file):
     model.translation = []
-    f = open(file_name, 'r')
+    f = open(file, 'r')
     for line in f.readlines():
         model.translation.append(line.strip('\n'))
 
 
-def save_asp_to_file(model, file_name):
+def save_asp_to_file(model, file):
     if model.asp() is None:
         return
-    f = open(file_name, 'w')
+    f = open(file, 'w')
     for r in model.asp_rules:
         f.write(r + '\n')
     f.close()
