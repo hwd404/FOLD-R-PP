@@ -39,14 +39,14 @@ class Classifier:
         for r in self.asp():
             print(r)
 
-    def save_model_to_file(self, file_name):
-        f = open(file_name, 'wb')
+    def save_model_to_file(self, file):
+        f = open(file, 'wb')
         pickle.dump(self, f)
         f.close()
 
 
-def load_model_from_file(file_name):
-    f = open(file_name, 'rb')
+def load_model_from_file(file):
+    f = open(file, 'rb')
     ret = pickle.load(f)
     f.close()
     return ret
