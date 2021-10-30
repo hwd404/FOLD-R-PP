@@ -91,7 +91,7 @@ The **classify** function can also be used to classify a single data sample.
 
 <code>
 	
-    model.save_model_to_file('example.model')
+    save_model_to_file(model, 'example.model')
     model2 = load_model_from_file('example.model')
     save_asp_to_file(model2, 'example.lp')
 
@@ -99,9 +99,67 @@ The **classify** function can also be used to classify a single data sample.
 
 A trained model can be saved to a file with **save_model_to_file** function. **load_model_from_file** function helps load model from file.
 The generated ASP program can be saved to a file with **save_asp_to_file** function.
+	
+### Justification
 
+FOLD-R++ provides simple format justification for predictions with **justify** function, the parameter **all_flag** means whether or not to return all the possible answer sets. 
+
+<code>
+	
+	model.justify(X_test[i], all_flag=True)
+	
+</code>
+
+Here is an example for a instance from cars dataset. The generated answer set program is :
+
+<code>
+	
+	% cars dataset (1728, 6)
+	ab2(X):-persons(X,'4').
+	ab3(X):-doors(X,'2'),not ab2(X).
+	ab4(X):-buying(X,'low'),not maint(X,'vhigh'),not ab3(X).
+	ab5(X):-buying(X,'med'),not maint(X,'high'),not maint(X,'vhigh'),not ab3(X).
+	label(X,'negative'):-buying(X,'vhigh'),maint(X,'high').
+	label(X,'negative'):-doors(X,'2'),not lugboot(X,'big'),not persons(X,'4'),lugboot(X,'small').
+	label(X,'negative'):-lugboot(X,'med'),not safety(X,'high'),doors(X,'2'),buying(X,'high').
+	label(X,'negative'):-lugboot(X,'small'),not safety(X,'high'),not ab4(X),not ab5(X).
+	label(X,'negative'):-maint(X,'vhigh'),buying(X,'high').
+	label(X,'negative'):-maint(X,'vhigh'),buying(X,'vhigh').
+	label(X,'negative'):-persons(X,'2').
+	label(X,'negative'):-safety(X,'low').
+	% acc 0.9971 p 1.0 r 0.9957 f1 0.9979
+	% foldr++ costs:  0:00:00.048285 
+
+</code>
+
+And the generated justification for an instance:
+
+<code>
+	
+	answer  1 :
+	[T]label(X,'negative'):-[T]safety(X,'low').
+	{'safety: low'} 
+
+	answer  2 :
+	[T]label(X,'negative'):-[T]persons(X,'2').
+	{'persons: 2'} 
+
+	answer  3 :
+	[T]label(X,'negative'):-[T]maint(X,'vhigh'),[T]buying(X,'vhigh').
+	{'maint: vhigh', 'buying: vhigh'} 
+
+	answer  4 :
+	[F]ab4(X):-[F]buying(X,'low'),not [T]maint(X,'vhigh'),not [U]ab3(X).
+	[F]ab5(X):-[F]buying(X,'med'),not [F]maint(X,'high'),not [T]maint(X,'vhigh'),not [U]ab3(X).
+	[T]label(X,'negative'):-[T]lugboot(X,'small'),not [F]safety(X,'high'),not [F]ab4(X),not [F]ab5(X).
+	{'safety: low', 'maint: vhigh', 'lugboot: small', 'buying: vhigh'} 
+
+</code>
+
+There are 4 answers have been generated for the current instance, because **all_flag** has been set as True when calling **justify** function. Only 1 answer will be generated if **all_flag** is False. In the generated answers, each literal has been tagged with label. **[T]** means True, **[F]** means False, and **[U]** means unnecessary to evaluate. And the smallest set of features of the instance is listed for each answer. If the instance had been classified as negative, there's no answer.
+	
 ### Justification by using s(CASP)
-**The installation of s(CASP) system is necessary for justification, and only for justification. The above examples do not need the s(CASP) system.**
+**The installation of s(CASP) system is necessary for this part. The above examples do not need the s(CASP) system.**
 
 Classification and its justification can be conducted with the s(CASP) system. However, each data sample needs to be converted into predicate format that the s(CASP) system expects. The **load_data_pred** function can be used for this conversion; it returns the data predicates string list. The parameter **numerics** lists all the numerical features.
 
