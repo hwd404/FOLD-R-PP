@@ -156,7 +156,7 @@ And the generated justification for an instance:
 
 </code>
 
-There are 4 answers have been generated for the current instance, because **all_flag** has been set as True when calling **justify** function. Only 1 answer will be generated if **all_flag** is False. In the generated answers, each literal has been tagged with label. **[T]** means True, **[F]** means False, and **[U]** means unnecessary to evaluate. And the smallest set of features of the instance is listed for each answer. If the instance had been classified as negative, there's no answer.
+There are 4 answers have been generated for the current instance, because **all_flag** has been set as True when calling **justify** function. Only 1 answer will be generated if **all_flag** is False. In the generated answers, each literal has been tagged with a label. **[T]** means True, **[F]** means False, and **[U]** means unnecessary to evaluate. And the smallest set of features of the instance is listed for each answer. If the instance had been classified as negative, there's no answer.
 	
 ### Justification by using s(CASP)
 **The installation of s(CASP) system is necessary for this part. The above examples do not need the s(CASP) system.**
