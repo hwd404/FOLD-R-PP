@@ -42,6 +42,7 @@ class Classifier:
             print(r)
 
     def justify(self, x, all_flag=False):
+        self.asp()
         all_pos = justify(self.frs, x, all_flag=all_flag)
         if len(all_pos) == 0:
             print('no answer \n')
