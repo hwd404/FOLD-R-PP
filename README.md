@@ -218,25 +218,19 @@ Here is the justification for a passenger in the titanic example above (note tha
 <code>
 
 	% QUERY:I would like to know if
-	     'goal' holds (for 1).
+	'goal' holds (for 0).
 
-		ANSWER:	1 (in 2.401 ms)
+	ANSWER:	1 (in 2.049 ms)
 
 	JUSTIFICATION_TREE:
-	'goal' holds (for 1), because
-	    'survived' holds (for 1, and 0), because
-		person 1 is male, and
-		there is no evidence that abnormal case 2 holds for 1, because
-		    there is no evidence that person 1 paid Var0 not equal 7.8292 for the ticket, and
-		    person 1 paid 7.8292 for the ticket.
-		there is no evidence that abnormal case 4 holds for 1, because
-		    there is no evidence that 'class' holds (for 1, and 1).
-		there is no evidence that abnormal case 6 holds for 1, because
-		    there is no evidence that person 1 is of age Var1 not equal 34.5, and
-		    person 1 is of age 34.5.
+	'goal' holds (for 0), because
+	    'survived' holds (for 0, and 0), because
+		person 0 paid 7.8292 for the ticket, and
+		person 0 is of age 34.5.
+	The global constraints hold.
 
 	MODEL:
-	{ goal(1),  survived(1,0),  sex(1,male),  not ab2(1),  not fare(1,Var0 | {Var0 \= 7.8292}),  fare(1,7.8292),  not ab4(1),  not class(1,1),  not ab6(1),  not age(1,Var1 | {Var1 \= 34.5}),  age(1,34.5) }
+	{ goal(0),  survived(0,0),  not sex(0,female),  not ab2(0),  not fare(0,Var0 | {Var0 \= 7.8292}),  fare(0,7.8292),  not ab4(0),  not class(0,1),  not ab6(0),  not age(0,Var1 | {Var1 \= 34.5}),  age(0,34.5) }
 
 </code>
 
