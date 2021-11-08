@@ -100,13 +100,13 @@ The **classify** function can also be used to classify a single data sample.
 A trained model can be saved to a file with **save_model_to_file** function. **load_model_from_file** function helps load model from file.
 The generated ASP program can be saved to a file with **save_asp_to_file** function.
 	
-### Justification
+### Justification and Rebuttal
 
-FOLD-R++ provides simple format justification for predictions with **justify** function, the parameter **all_flag** means whether or not to return all the possible answer sets. 
+FOLD-R++ provides simple format justification and rebuttal for predictions with **explain** function, the parameter **all_flag** means whether or not to list all the answer sets. 
 
 <code>
 	
-	model.justify(X_test[i], all_flag=True)
+	model.explain(X_test[i], all_flag=True)
 	
 </code>
 
@@ -115,48 +115,61 @@ Here is an example for a instance from cars dataset. The generated answer set pr
 <code>
 	
 	% cars dataset (1728, 6)
-	ab2(X):-persons(X,'4').
-	ab3(X):-doors(X,'2'),not ab2(X).
-	ab4(X):-buying(X,'low'),not maint(X,'vhigh'),not ab3(X).
-	ab5(X):-buying(X,'med'),not maint(X,'high'),not maint(X,'vhigh'),not ab3(X).
-	label(X,'negative'):-buying(X,'vhigh'),maint(X,'high').
-	label(X,'negative'):-doors(X,'2'),not lugboot(X,'big'),not persons(X,'4'),lugboot(X,'small').
-	label(X,'negative'):-lugboot(X,'med'),not safety(X,'high'),doors(X,'2'),buying(X,'high').
-	label(X,'negative'):-lugboot(X,'small'),not safety(X,'high'),not ab4(X),not ab5(X).
-	label(X,'negative'):-maint(X,'vhigh'),buying(X,'high').
-	label(X,'negative'):-maint(X,'vhigh'),buying(X,'vhigh').
+	ab2(X):-doors(X,'2'),persons(X,'more').
+	ab3(X):-buying(X,'low'),not maint(X,'vhigh'),not ab2(X).
+	ab4(X):-not persons(X,'more').
+	ab5(X):-doors(X,'2'),not ab4(X).
+	ab6(X):-buying(X,'med'),not maint(X,'vhigh'),not maint(X,'high'),not ab5(X).
+	label(X,'negative'):-buying(X,'vhigh'),maint(X,'vhigh').
+	label(X,'negative'):-lugboot(X,'small'),not safety(X,'high'),not ab3(X),not ab6(X).
 	label(X,'negative'):-persons(X,'2').
 	label(X,'negative'):-safety(X,'low').
-	% acc 0.9971 p 1.0 r 0.9957 f1 0.9979
-	% foldr++ costs:  0:00:00.048285 
+	% acc 0.9509 p 1.0 r 0.9267 f1 0.962
+	% foldr++ costs:  0:00:00.035228  
 
 </code>
 
-And the generated justification for an instance:
+And the generated justification for an instance predicted as positive:
 
 <code>
 	
 	answer  1 :
-	[T]label(X,'negative'):-[T]safety(X,'low').
-	{'safety: low'} 
-
-	answer  2 :
 	[T]label(X,'negative'):-[T]persons(X,'2').
 	{'persons: 2'} 
 
-	answer  3 :
-	[T]label(X,'negative'):-[T]maint(X,'vhigh'),[T]buying(X,'vhigh').
-	{'maint: vhigh', 'buying: vhigh'} 
+	answer  2 :
+	[T]label(X,'negative'):-[T]safety(X,'low').
+	{'safety: low'} 
 
-	answer  4 :
-	[F]ab4(X):-[F]buying(X,'low'),not [T]maint(X,'vhigh'),not [U]ab3(X).
-	[F]ab5(X):-[F]buying(X,'med'),not [F]maint(X,'high'),not [T]maint(X,'vhigh'),not [U]ab3(X).
-	[T]label(X,'negative'):-[T]lugboot(X,'small'),not [F]safety(X,'high'),not [F]ab4(X),not [F]ab5(X).
-	{'safety: low', 'maint: vhigh', 'lugboot: small', 'buying: vhigh'} 
+	answer  3 :
+	[T]label(X,'negative'):-[T]buying(X,'vhigh'),[T]maint(X,'vhigh').
+	{'buying: vhigh', 'maint: vhigh'} 
 
 </code>
 
-There are 4 answers have been generated for the current instance, because **all_flag** has been set as True when calling **justify** function. Only 1 answer will be generated if **all_flag** is False. In the generated answers, each literal has been tagged with a label. **[T]** means True, **[F]** means False, and **[U]** means unnecessary to evaluate. And the smallest set of features of the instance is listed for each answer. If the instance had been classified as negative, there's no answer.
+There are 3 answers have been generated for the current instance, because **all_flag** has been set as True when calling **explain** function. Only 1 answer will be generated if **all_flag** is False. In the generated answers, each literal has been tagged with a label. **[T]** means True, **[F]** means False, and **[U]** means unnecessary to evaluate. And the smallest set of features of the instance is listed for each answer.
+
+For an instance predicted as negative, there' no answer set. Instead, the explaination has to list the rebuttals for all the possible rules, and the parameter **all_flag** will be ignored:
+
+<code>
+	
+	rebuttal  1 :
+	[F]label(X,'negative'):-[F]persons(X,'2').
+	{'persons: 4'} 
+
+	rebuttal  2 :
+	[F]label(X,'negative'):-[F]safety(X,'low').
+	{'safety: high'} 
+
+	rebuttal  3 :
+	[F]label(X,'negative'):-[T]buying(X,'vhigh'),[F]maint(X,'vhigh').
+	{'buying: vhigh', 'maint: high'} 
+
+	rebuttal  4 :
+	[F]label(X,'negative'):-[F]lugboot(X,'small'),not [T]safety(X,'high'),not [U]ab3(X),not [U]ab6(X).
+	{'safety: high', 'lugboot: med'}  
+
+</code>
 	
 ### Justification by using s(CASP)
 **The installation of s(CASP) system is necessary for this part. The above examples do not need the s(CASP) system.**
