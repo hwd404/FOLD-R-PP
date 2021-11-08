@@ -134,20 +134,18 @@ And the generated justification for an instance predicted as positive:
 <code>
 	
 	answer  1 :
-	[T]label(X,'negative'):-[T]persons(X,'2').
-	{'persons: 2'} 
-
-	answer  2 :
 	[T]label(X,'negative'):-[T]safety(X,'low').
 	{'safety: low'} 
 
-	answer  3 :
-	[T]label(X,'negative'):-[T]buying(X,'vhigh'),[T]maint(X,'vhigh').
-	{'buying: vhigh', 'maint: vhigh'} 
+	answer  2 :
+	[F]ab3(X):-[F]buying(X,'low'),not [F]maint(X,'vhigh'),not [U]ab2(X).
+	[F]ab6(X):-[F]buying(X,'med'),not [F]maint(X,'vhigh'),not [F]maint(X,'high'),not [U]ab5(X).
+	[T]label(X,'negative'):-[T]lugboot(X,'small'),not [F]safety(X,'high'),not [F]ab3(X),not [F]ab6(X).
+	{'safety: low', 'buying: vhigh', 'lugboot: small', 'maint: med'}  
 
 </code>
 
-There are 3 answers have been generated for the current instance, because **all_flag** has been set as True when calling **explain** function. Only 1 answer will be generated if **all_flag** is False. In the generated answers, each literal has been tagged with a label. **[T]** means True, **[F]** means False, and **[U]** means unnecessary to evaluate. And the smallest set of features of the instance is listed for each answer.
+There are 2 answers have been generated for the current instance, because **all_flag** has been set as True when calling **explain** function. Only 1 answer will be generated if **all_flag** is False. In the generated answers, each literal has been tagged with a label. **[T]** means True, **[F]** means False, and **[U]** means unnecessary to evaluate. And the smallest set of features of the instance is listed for each answer.
 
 For an instance predicted as negative, there' no answer set. Instead, the explaination has to list the rebuttals for all the possible rules, and the parameter **all_flag** will be ignored:
 
