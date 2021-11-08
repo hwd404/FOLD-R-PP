@@ -6,9 +6,9 @@ from datetime import timedelta
 
 def main():
     # model, X, Y = acute()
-    # model, X, Y = autism()
+    model, X, Y = autism()
     # model, X, Y = breastw()
-    model, X, Y = cars()
+    # model, X, Y = cars()
     # model, X, Y = credit()
     # model, X, Y = heart()
     # model, X, Y = kidney()
@@ -34,7 +34,8 @@ def main():
     print('% foldr++ costs: ', timedelta(seconds=end - start), '\n')
 
     for i in range(len(X_test)):
-        model.justify(X_test[i], all_flag=True)
+        print(model.classify(X_test[i]))
+        model.explain(X_test[i], all_flag=True)
 
 
 if __name__ == '__main__':

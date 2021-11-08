@@ -212,9 +212,9 @@ def justify_one(frs, x, idx=-1, pos=[], start=0):
         i, d, ab = r[0], r[1], r[2]
         if i != idx:
             continue
-        if not all([evaluate(j, x) for j in d]):
+        if not all([evaluate(_j, x) for _j in d]):
             continue
-        if len(ab) > 0 and any([justify_one(frs, x, idx=j, pos=pos)[0] for j in ab]):
+        if len(ab) > 0 and any([justify_one(frs, x, idx=_j, pos=pos)[0] for _j in ab]):
             continue
         pos.append(r)
         return 1, j
@@ -233,6 +233,40 @@ def justify(frs, x, all_flag=False):
         res, i = justify_one(frs, x, pos=pos, start=i)
         if res:
             ret.append(pos)
+            i += 1
+            if not all_flag:
+                break
+        else:
+            break
+    return ret
+
+
+def rebut_one(frs, x, idx=-1, neg=[], start=0):
+    for j in range(start, len(frs)):
+        r = frs[j]
+        i, d, ab = r[0], r[1], r[2]
+        if i != idx:
+            continue
+        if not all([evaluate(_j, x) for _j in d]):
+            neg.append(r)
+            return 0, j
+        if len(ab) > 0:
+            for _j in ab:
+                if justify_one(frs, x, idx=_j, pos=neg)[0]:
+                    neg.append(r)
+                    return 0, j
+        continue
+    return 1, -1
+
+
+def rebut(frs, x, all_flag=True):
+    ret = []
+    i = 0
+    while i < len(frs):
+        neg = []
+        res, i = rebut_one(frs, x, neg=neg, start=i)
+        if not res:
+            ret.append(neg)
             i += 1
             if not all_flag:
                 break
