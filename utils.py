@@ -140,7 +140,7 @@ def decode_rules(rules, attrs, x=None):
                     prefix = '[U]'
                 else:
                     prefix = '[T]' if justify_one(rules, x, it)[0] else '[F]'
-            return prefix + 'ab' + str(abs(it)) + '(X)'
+            return prefix + 'ab' + str(abs(it) - 1) + '(X)'
 
     def _f2(rule):
         head = _f1(rule[0])
