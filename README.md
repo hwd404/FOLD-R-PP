@@ -29,8 +29,12 @@ For example, the UCI kidney dataset can be loaded with the following code:
              'wbcc', 'rbcc', 'htn', 'dm', 'cad', 'appet', 'pe', 'ane']
     nums = ['age', 'bp', 'sg', 'bgr', 'bu', 'sc', 'sod', 'pot', 'hemo', 'pcv', 'wbcc', 'rbcc']
     model = Classifier(attrs=attrs, numeric=nums, label='label', pos='ckd')
-    X, Y = model.load_data('data/kidney/kidney.csv')
-    X_train, Y_train, X_test, Y_test = split_data(X, Y, ratio=0.8, rand=True)
+
+    data = model.load_data('data/kidney/kidney.csv')
+    data_train, data_test = split_data(data, ratio=0.8, rand=True)
+
+    X_train, Y_train = split_xy(data_train)
+    X_test,  Y_test = split_xy(data_test)
 	
 </code>
 
