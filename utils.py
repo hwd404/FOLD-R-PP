@@ -60,22 +60,12 @@ def split_X_by_Y(X, Y):
     return X_pos, X_neg
 
 
-def split_data(X, Y, ratio=0.8, rand=True):
-    n = len(Y)
-    k = int(n * ratio)
-    train = []
-    for i in range(k):
-        train.append(i)
+def split_data(data, ratio=0.8, rand=True):
     if rand:
-        for i in range(k, n):
-            j = random.randint(0, i)
-            if j < k:
-                train[j] = i
-    X_train = [X[i] for i in range(n) if i in set(train)]
-    Y_train = [Y[i] for i in range(n) if i in set(train)]
-    X_test = [X[i] for i in range(n) if i not in set(train)]
-    Y_test = [Y[i] for i in range(n) if i not in set(train)]
-    return X_train, Y_train, X_test, Y_test
+        random.shuffle(data)
+    num = int(len(data) * ratio)
+    train, test = data[: num], data[num:]
+    return train, test
 
 
 def get_scores(Y_hat, Y):

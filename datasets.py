@@ -1,4 +1,4 @@
-from foldrpp import *
+from foldrpp import Classifier
 import numpy as np
 
 
@@ -6,9 +6,9 @@ def acute():
     attrs = ['a1', 'a2', 'a3', 'a4', 'a5', 'a6']
     nums = ['a1']
     model = Classifier(attrs=attrs, numeric=nums, label='label', pos='yes')
-    X, Y = model.load_data('data/acute/acute.csv')
-    print('\n% acute dataset', np.shape(X))
-    return model, X, Y
+    data = model.load_data('data/acute/acute.csv')
+    print('\n% acute dataset', np.shape(data))
+    return model, data
 
 
 def adult():
@@ -16,9 +16,9 @@ def adult():
     'race','sex','capital_gain','capital_loss','hours_per_week','native_country']
     nums = ['age','fnlwgt','education_num','capital_gain','capital_loss','hours_per_week']
     model = Classifier(attrs=attrs, numeric=nums, label='label', pos='<=50K')
-    X, Y = model.load_data('data/adult/adult.csv')
-    print('\n% adult dataset', np.shape(X))
-    return model, X, Y
+    data = model.load_data('data/adult/adult.csv')
+    print('\n% adult dataset', np.shape(data))
+    return model, data
 
 
 def autism():
@@ -26,9 +26,9 @@ def autism():
              'pdd', 'used_app_before', 'relation']
     nums = ['age']
     model = Classifier(attrs=attrs, numeric=nums, label='label', pos='NO')
-    X, Y = model.load_data('data/autism/autism.csv')
-    print('\n% autism dataset', np.shape(X))
-    return model, X, Y
+    data = model.load_data('data/autism/autism.csv')
+    print('\n% autism dataset', np.shape(data))
+    return model, data
 
 
 def breastw():
@@ -36,26 +36,26 @@ def breastw():
     'single_epi_cell_size', 'bare_nuclei', 'bland_chromatin', 'normal_nucleoli', 'mitoses']
     nums = attrs
     model = Classifier(attrs=attrs, numeric=nums, label='label', pos='benign')
-    X, Y = model.load_data('data/breastw/breastw.csv')
-    print('\n% breastw dataset', np.shape(X))
-    return model, X, Y
+    data = model.load_data('data/breastw/breastw.csv')
+    print('\n% breastw dataset', np.shape(data))
+    return model, data
 
 
 def cars():
     attrs = ['buying', 'maint', 'doors', 'persons', 'lugboot', 'safety']
     model = Classifier(attrs=attrs, numeric=[], label='label', pos='negative')
-    X, Y = model.load_data('data/cars/cars.csv')
-    print('\n% cars dataset', np.shape(X))
-    return model, X, Y
+    data = model.load_data('data/cars/cars.csv')
+    print('\n% cars dataset', np.shape(data))
+    return model, data
 
 
 def credit():
     attrs = ['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9', 'a10', 'a11', 'a12', 'a13', 'a14', 'a15']
     nums = ['a2', 'a3', 'a8', 'a11', 'a14', 'a15']
     model = Classifier(attrs=attrs, numeric=nums, label='label', pos='-')
-    X, Y = model.load_data('data/credit/credit.csv')
-    print('\n% credit dataset', np.shape(X))
-    return model, X, Y
+    data = model.load_data('data/credit/credit.csv')
+    print('\n% credit dataset', np.shape(data))
+    return model, data
 
 
 def heart():
@@ -64,9 +64,9 @@ def heart():
     'slope', 'major_vessels', 'thal']
     nums = ['age', 'blood_pressure', 'serum_cholestoral', 'maximum_heart_rate_achieved', 'oldpeak']
     model = Classifier(attrs=attrs, numeric=nums, label='label', pos='absent')
-    X, Y = model.load_data('data/heart/heart.csv')
-    print('\n% heart dataset', np.shape(X))
-    return model, X, Y
+    data = model.load_data('data/heart/heart.csv')
+    print('\n% heart dataset', np.shape(data))
+    return model, data
 
 
 def kidney():
@@ -74,9 +74,9 @@ def kidney():
     'wbcc', 'rbcc', 'htn', 'dm', 'cad', 'appet', 'pe', 'ane']
     nums = ['age', 'bp', 'sg', 'bgr', 'bu', 'sc', 'sod', 'pot', 'hemo', 'pcv', 'wbcc', 'rbcc']
     model = Classifier(attrs=attrs, numeric=nums, label='label', pos='ckd')
-    X, Y = model.load_data('data/kidney/kidney.csv')
-    print('\n% kidney dataset', np.shape(X))
-    return model, X, Y
+    data = model.load_data('data/kidney/kidney.csv')
+    print('\n% kidney dataset', np.shape(data))
+    return model, data
 
 
 def krkp():
@@ -84,9 +84,9 @@ def krkp():
     'a17', 'a18', 'a19', 'a20', 'a21', 'a22', 'a23', 'a24', 'a25', 'a26', 'a27', 'a28', 'a29', 'a30', 'a31', 'a32',
     'a33', 'a34', 'a35', 'a36']
     model = Classifier(attrs=attrs, numeric=[], label='label', pos='won')
-    X, Y = model.load_data('data/krkp/krkp.csv')
-    print('\n% krkp dataset', np.shape(X))
-    return model, X, Y
+    data = model.load_data('data/krkp/krkp.csv')
+    print('\n% krkp dataset', np.shape(data))
+    return model, data
 
 
 def mushroom():
@@ -95,9 +95,9 @@ def mushroom():
     'stalk_color_above_ring', 'stalk_color_below_ring', 'veil_type', 'veil_color', 'ring_number', 'ring_type',
     'spore_print_color', 'population', 'habitat']
     model = Classifier(attrs=attrs, numeric=[], label='label', pos='p')
-    X, Y = model.load_data('data/mushroom/mushroom.csv')
-    print('\n% mushroom dataset', np.shape(X))
-    return model, X, Y
+    data = model.load_data('data/mushroom/mushroom.csv')
+    print('\n% mushroom dataset', np.shape(data))
+    return model, data
 
 
 def sonar():
@@ -107,9 +107,9 @@ def sonar():
     'a49', 'a50', 'a51', 'a52', 'a53', 'a54', 'a55', 'a56', 'a57', 'a58', 'a59', 'a60']
     nums = attrs
     model = Classifier(attrs=attrs, numeric=nums, label='label', pos='Mine')
-    X, Y = model.load_data('data/sonar/sonar.csv')
-    print('\n% sonar dataset', np.shape(X))
-    return model, X, Y
+    data = model.load_data('data/sonar/sonar.csv')
+    print('\n% sonar dataset', np.shape(data))
+    return model, data
 
 
 def voting():
@@ -118,36 +118,36 @@ def voting():
     'mx_missile', 'immigration', 'synfuels_corporation_cutback', 'education_spending', 'superfund_right_to_sue',
     'crime', 'duty_free_exports', 'export_administration_act_south_africa']
     model = Classifier(attrs=attrs, numeric=[], label='label', pos='republican')
-    X, Y = model.load_data('data/voting/voting.csv')
-    print('\n% voting dataset', np.shape(X))
-    return model, X, Y
+    data = model.load_data('data/voting/voting.csv')
+    print('\n% voting dataset', np.shape(data))
+    return model, data
 
 
 def ecoli():
     attrs = ['sn','mcg','gvh','lip','chg','aac','alm1','alm2']
     nums = ['mcg','gvh','lip','chg','aac','alm1','alm2']
     model = Classifier(attrs=attrs, numeric=nums, label='label', pos='cp')
-    X, Y = model.load_data('data/ecoli/ecoli.csv')
-    print('\n% ecoli dataset', np.shape(X))
-    return model, X, Y
+    data = model.load_data('data/ecoli/ecoli.csv')
+    print('\n% ecoli dataset', np.shape(data))
+    return model, data
 
 
 def ionosphere():
     attrs = ['c1','c2','c3','c4','c5','c6','c7','c8','c9','c10','c11','c12','c13','c14','c15','c16','c17','c18','c19',
     'c20','c21','c22','c23','c24','c25','c26','c27','c28','c29','c30','c31','c32','c33','c34']
     model = Classifier(attrs=attrs, numeric=attrs, label='label', pos='g')
-    X, Y = model.load_data('data/ionosphere/ionosphere.csv')
-    print('\n% ionosphere dataset', np.shape(X))
-    return model, X, Y
+    data = model.load_data('data/ionosphere/ionosphere.csv')
+    print('\n% ionosphere dataset', np.shape(data))
+    return model, data
 
 
 def wine():
     attrs = ['alcohol','malic_acid','ash','alcalinity_of_ash','magnesium','tot_phenols','flavanoids',
     'nonflavanoid_phenols','proanthocyanins','color_intensity','hue','OD_of_diluted','proline']
     model = Classifier(attrs=attrs, numeric=attrs, label='label', pos='3')
-    X, Y = model.load_data('data/wine/wine.csv')
-    print('\n% wine dataset', np.shape(X))
-    return model, X, Y
+    data = model.load_data('data/wine/wine.csv')
+    print('\n% wine dataset', np.shape(data))
+    return model, data
 
 
 def credit_card():
@@ -157,6 +157,15 @@ def credit_card():
     nums = ['LIMIT_BAL','AGE','BILL_AMT1','BILL_AMT2','BILL_AMT3','BILL_AMT4','BILL_AMT5','BILL_AMT6','PAY_AMT1',
     'PAY_AMT2','PAY_AMT3','PAY_AMT4','PAY_AMT5','PAY_AMT6']
     model = Classifier(attrs=attrs, numeric=nums, label='DEFAULT_PAYMENT', pos='0')
-    X, Y = model.load_data('data/credit_card/credit_card.csv')
-    print('\n% credit card dataset', np.shape(X))
-    return model, X, Y
+    data = model.load_data('data/credit_card/credit_card.csv')
+    print('\n% credit card dataset', np.shape(data))
+    return model, data
+
+
+def rain():
+    attrs = ['Month','Day','Location','MinTemp','MaxTemp','Rainfall','Evaporation','Sunshine','WindGustDir','WindGustSpeed','WindDir9am','WindDir3pm','WindSpeed9am','WindSpeed3pm','Humidity9am','Humidity3pm','Pressure9am','Pressure3pm','Cloud9am','Cloud3pm','Temp9am','Temp3pm','RainToday']
+    nums = ['Month','Day','MinTemp','MaxTemp','Rainfall','WindDir9am','WindDir3pm','WindSpeed9am','WindSpeed3pm','Humidity9am','Humidity3pm','Pressure9am','Pressure3pm','Temp9am','Temp3pm']
+    model = Classifier(attrs=attrs, numeric=nums, label='RainTomorrow', pos='No')
+    data = model.load_data('data/rain/rain.csv')
+    print('\n% rain dataset', np.shape(data))
+    return model, data

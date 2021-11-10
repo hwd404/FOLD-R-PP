@@ -18,8 +18,7 @@ class Classifier:
 
     def load_data(self, file, amount=-1):
         data, self.attrs = load_data(file, self.attrs, self.label, self.numeric, self.pos, amount)
-        X, Y = split_xy(data)
-        return X, Y
+        return data
 
     def fit(self, X, Y, ratio=0.5):
         X_pos, X_neg = split_X_by_Y(X, Y)
