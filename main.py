@@ -8,11 +8,11 @@ def main():
     # model, data = acute()
     # model, data = autism()
     # model, data = breastw()
-    model, data = cars()
+    # model, data = cars()
     # model, data = credit()
     # model, data = heart()
     # model, data = kidney()
-    # model, data = krkp()
+    model, data = krkp()
     # model, data = mushroom()
     # model, data = sonar()
     # model, data = voting()
@@ -38,8 +38,11 @@ def main():
     print('% acc', round(acc, 4), 'p', round(p, 4), 'r', round(r, 4), 'f1', round(f1, 4))
     print('% foldr++ costs: ', timedelta(seconds=end - start), '\n')
 
-    # for i in range(len(X_test)):
-    #     model.explain(X_test[i], all_flag=True)
+    k = 1
+    for i in range(len(X_test)):
+        print('Explanation for example number', k, ':')
+        model.explain(X_test[i], all_flag=False)
+        k += 1
 
 
 if __name__ == '__main__':
