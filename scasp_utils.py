@@ -2,7 +2,7 @@ import numpy as np
 import random
 import subprocess
 import tempfile
-from foldrpp import Classifier
+from foldrpp import *
 
 
 def load_data(file, numerics, amount=-1):
@@ -95,7 +95,7 @@ def save_asp_to_file(model, file):
     f.close()
 
 
-def scasp_query(model, x, pred=False):
+def scasp_query(model, x):
     if model.asp() is None:
         return
     tf = tempfile.NamedTemporaryFile()
@@ -104,25 +104,29 @@ def scasp_query(model, x, pred=False):
     if model.translation is not None:
         for t in model.translation:
             tf.write((t + '\n').encode())
-    if not pred:
-        data_pred = decode_data([x], model.attrs, model.seq)
-        for preds in data_pred:
-            for p in preds:
-                tf.write((p + '\n').encode())
-        seq = str(model.seq)
-        model.seq += 1
-    else:
-        for d in x:
-            tf.write((d + '\n').encode())
-        first = x[0].replace('(', '#').replace(',', '#').replace(')', '#').split('#')
-        seq = first[1]
 
-    extra = 'goal(X):-' + model.label.lower().replace(' ', '_') + '(X,\'' + model.pos.lower().replace(' ', '_') + '\').\n'
+    data_pred = decode_data([x], model.attrs, model.seq)
+    for preds in data_pred:
+        for p in preds:
+            tf.write((p + '\n').encode())
+    seq = str(model.seq)
+    model.seq += 1
+
+    if model.classify(x):
+        extra = 'explain(X):- '
+    else:
+        extra = 'explain(X):- not '
+    extra += model.label.lower().replace(' ', '_') + '(X,\'' + model.pos.lower().replace(' ', '_') + '\').\n'
     tf.write(extra.encode())
-    query = '?- goal(' + seq + ').'
+
+    query = '?- explain(' + seq + ').'
     tf.write(query.encode())
     tf.flush()
-    command = 'scasp' + ' -s1 --tree --human --pos ' + tf.name
+
+    if model.classify(x):
+        command = 'scasp' + ' -s1 --tree --human --pos ' + tf.name
+    else:
+        command = 'scasp' + ' -s0 --tree --human --pos ' + tf.name
     res = subprocess.run([command], stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
     tf.close()
     return res
@@ -133,21 +137,20 @@ def titanic():
     nums = ['Age', 'Number_of_Siblings_Spouses', 'Number_Of_Parents_Children', 'Fare']
     model = Classifier(attrs=attrs, numeric=nums, label='Survived', pos='0')
 
-    X_train, Y_train = model.load_data('data/titanic/train.csv')
-    X_test, Y_test = model.load_data('data/titanic/test.csv')
-    X_pred = load_data_pred('data/titanic/test.csv', numerics=nums)
+    data_train = model.load_data('data/titanic/train.csv')
+    data_test = model.load_data('data/titanic/test.csv')
+    X_train, Y_train = split_xy(data_train)
+    X_test, Y_test = split_xy(data_test)
 
     model.fit(X_train, Y_train, ratio=0.5)
-    save_asp_to_file(model, 'data/titanic/asp.txt')
-
+    model.print_asp()
+    # save_asp_to_file(model, 'data/titanic/asp.txt')
     load_translation(model, 'data/titanic/template.txt')
 
     for i in range(len(X_test)):
         print(model.classify(X_test[i]))
-        res = scasp_query(model, X_pred[i], pred=True)
+        res = scasp_query(model, X_test[i])
         print(res)
-        # res = scasp_query(model, X_test[i], pred=False)
-        # print(res)
 
 
 if __name__ == '__main__':
