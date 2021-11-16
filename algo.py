@@ -182,6 +182,7 @@ def learn_rule(X_pos, X_neg, used_items=[], ratio=0.5):
 
 def flatten_rules(rules):
     ret = []
+    abrules = []
     rule_map = dict()
     flatten_rules.ab = -2
 
@@ -196,14 +197,17 @@ def flatten_rules(rules):
         if t not in rule_map:
             rule_map[t] = -1 if root else flatten_rules.ab
             _ret = rule_map[t]
-            ret.append((_ret, t[0], t[1]))
+            if root:
+                ret.append((_ret, t[0], t[1]))
+            else:
+                abrules.append((_ret, t[0], t[1]))
             if not root:
                 flatten_rules.ab -= 1
         return rule_map[t]
 
     for r in rules:
         _func(r, root=True)
-    return ret
+    return ret + abrules
 
 
 def justify_one(frs, x, idx=-1, pos=[], start=0):

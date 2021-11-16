@@ -154,8 +154,6 @@ def decode_rules(rules, attrs, x=None):
 
     for _r in rules:
         ret.append(_f2(_r))
-    if x is None:
-        ret.sort()
     return ret
 
 
