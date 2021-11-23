@@ -8,8 +8,11 @@ def example():
              'wbcc', 'rbcc', 'htn', 'dm', 'cad', 'appet', 'pe', 'ane']
     nums = ['age', 'bp', 'sg', 'bgr', 'bu', 'sc', 'sod', 'pot', 'hemo', 'pcv', 'wbcc', 'rbcc']
     model = Classifier(attrs=attrs, numeric=nums, label='label', pos='ckd')
-    X, Y = model.load_data('data/kidney/kidney.csv')
-    X_train, Y_train, X_test, Y_test = split_data(X, Y, ratio=0.8, rand=True)
+
+    data = model.load_data('data/kidney/kidney.csv')
+    data_train, data_test = split_data(data, ratio=0.8, rand=True)
+    X_train, Y_train = split_xy(data_train)
+    X_test,  Y_test = split_xy(data_test)
 
     start = timer()
     model.fit(X_train, Y_train, ratio=0.5)
@@ -33,8 +36,10 @@ def titanic():
     nums = ['Age', 'Number_of_Siblings_Spouses', 'Number_Of_Parents_Children', 'Fare']
     model = Classifier(attrs=attrs, numeric=nums, label='Survived', pos='0')
 
-    X_train, Y_train = model.load_data('data/titanic/train.csv')
-    X_test, Y_test = model.load_data('data/titanic/test.csv')
+    data_train = model.load_data('data/titanic/train.csv')
+    data_test = model.load_data('data/titanic/test.csv')
+    X_train, Y_train = split_xy(data_train)
+    X_test, Y_test = split_xy(data_test)
 
     model.fit(X_train, Y_train, ratio=0.5)
     Y_test_hat = model.predict(X_test)
@@ -42,12 +47,13 @@ def titanic():
     acc, p, r, f1 = get_scores(Y_test_hat, Y_test)
     print('% acc', round(acc, 4), 'p', round(p, 4), 'r', round(r, 4), 'f1', round(f1, 4), '\n')
 
+    k = 1
     for i in range(len(X_test)):
-        print(model.classify(X_test[i]))
-        model.justify(X_test[i], all_flag=True)
-    exit()
+        print('Explanation for example number', k, ':')
+        model.explain(X_test[i], all_flag=True)
+        k += 1
 
 
 if __name__ == '__main__':
-    example()
-    # titanic()
+    # example()
+    titanic()

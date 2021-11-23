@@ -119,7 +119,7 @@ def decode_rules(rules, attrs, x=None):
             elif r == '!=':
                 return 'not ' + not_prefix + k + '(X,' + v + ')'
             else:
-                return prefix + k + '(X,' + 'N' + str(i) + ')' + ',N' + str(i) + r + str(round(v, 3))
+                return prefix + k + '(X,' + 'N' + str(i) + ')' + ', N' + str(i) + r + str(round(v, 3))
         elif it == -1:
             if x is not None:
                 prefix = '[T]' if justify_one(rules, x, it)[0] else '[F]'
@@ -136,18 +136,18 @@ def decode_rules(rules, attrs, x=None):
         head = _f1(rule[0])
         body = ''
         for i in list(rule[1]):
-            body = body + _f1(i) + ','
+            body = body + _f1(i) + ', '
         tail = ''
         for i in list(rule[2]):
             t = _f1(i)
             if 'not' not in t:
-                tail = tail + 'not ' + _f1(i) + ','
+                tail = tail + 'not ' + _f1(i) + ', '
             else:
                 t = t.replace('not ', '')
-                tail = tail + t + ','
-        _ret = head + ':-' + body + tail
+                tail = tail + t + ', '
+        _ret = head + ':- ' + body + tail
         chars = list(_ret)
-        chars[-1] = '.'
+        chars[-2] = '.'
         _ret = ''.join(chars)
         _ret = _ret.replace('<=', '=<')
         return _ret
