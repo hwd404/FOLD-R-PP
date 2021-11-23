@@ -203,6 +203,8 @@ def flatten_rules(rules):
                 abrules.append((_ret, t[0], t[1]))
             if not root:
                 flatten_rules.ab -= 1
+        elif root:
+            ret.append((rule[0], t[0], t[1]))
         return rule_map[t]
 
     for r in rules:
