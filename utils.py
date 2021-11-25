@@ -145,7 +145,7 @@ def decode_rules(rules, attrs, x=None):
             else:
                 t = t.replace('not ', '')
                 tail = tail + t + ', '
-        _ret = head + ':- ' + body + tail
+        _ret = head + ' :- ' + body + tail
         chars = list(_ret)
         chars[-2] = '.'
         _ret = ''.join(chars)
