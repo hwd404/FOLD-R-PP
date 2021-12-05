@@ -254,7 +254,7 @@ Here is the justification for a passenger in the titanic example above (note tha
 
 All the resources of s(CASP) can be found at https://gitlab.software.imdea.org/ciao-lang/sCASP.
 
-## Citation
+<!-- ## Citation
 
 <code>
 	
@@ -282,3 +282,4 @@ All the resources of s(CASP) can be found at https://gitlab.software.imdea.org/c
 </code>
 
 	
+ -->
