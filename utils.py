@@ -157,6 +157,76 @@ def decode_rules(rules, attrs, x=None):
     return ret
 
 
+def proof_tree(rules, attrs, x=None):
+    ret = []
+    nr = {'<=': '>', '>': '<=', '==': '!=', '!=': '=='}
+
+    def _f1(it):
+        prefix, suffix, not_suffix = '', '', ''
+        if isinstance(it, tuple) and len(it) == 3:
+            if x is not None:
+                prefix = '[T]' if evaluate(it, x) else '[F]'
+                # suffix = ''
+                suffix = ' DOES HOLD' if prefix == '[T]' else ' DOES NOT HOLD '
+            i, r, v = it[0], it[1], it[2]
+            if i < -1:
+                i = -i - 2
+                r = nr[r]
+            k = attrs[i].lower().replace(' ', '_')
+            if isinstance(v, str):
+                v = v.lower().replace(' ', '_')
+                v = 'null' if len(v) == 0 else '\'' + v + '\''
+            if r == '==':
+                return 'the value of ' + k + ' is \'' + str(x[i]) + '\' which should equal ' + v + suffix
+            elif r == '!=':
+                return 'the value of ' + k + ' is \'' + str(x[i]) + '\' which should not equal ' + v + suffix
+            else:
+                if r == '<=':
+                    return 'the value of ' + k + ' is ' + str(x[i]) + ' which should be less equal to ' + str(round(v, 3)) + suffix
+                else:
+                    return 'the value of ' + k + ' is ' + str(x[i]) + ' which should be greater than ' + str(round(v, 3)) + suffix
+        elif it == -1:
+            if x is not None:
+                prefix = '[T]' if justify_one(rules, x, it)[0] else '[F]'
+            if prefix == '[T]':
+                return attrs[-1] + ' DOES HOLD '
+            else:
+                return attrs[-1] + ' DOES NOT HOLD '
+        else:
+            if x is not None:
+                if it not in [r[0] for r in rules]:
+                    prefix = '[U]'
+                else:
+                    prefix = '[T]' if justify_one(rules, x, it)[0] else '[F]'
+            if prefix == '[T]':
+                return 'exception ab' + str(abs(it) - 1) + ' DOES HOLD '
+            else:
+                return 'exception ab' + str(abs(it) - 1) + ' DOES NOT HOLD '
+
+    def _f3(rule, indent=0):
+        head = '\t' * indent + _f1(rule[0]) + 'because \n'
+        body = ''
+        for i in list(rule[1]):
+            body = body + '\t' * (indent + 1) + _f1(i) + '\n'
+        tail = ''
+        for i in list(rule[2]):
+            for r in rules:
+                if i != r[0]:
+                    continue
+                else:
+                    t = _f3(r, indent + 1)
+                    tail = tail + t
+        _ret = head + body + tail
+        chars = list(_ret)
+        _ret = ''.join(chars)
+        return _ret
+
+    for _r in rules:
+        if _r[0] == -1:
+            ret.append(_f3(_r))
+    return ret
+
+
 def num_predicates(rules):
     def _n_pred(rule):
         return len(rule[1] + rule[2])
