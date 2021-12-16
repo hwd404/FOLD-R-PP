@@ -7,12 +7,12 @@ from datetime import timedelta
 def main():
     # model, data = acute()
     # model, data = autism()
-    # model, data = breastw()
+    model, data = breastw()
     # model, data = cars()
     # model, data = credit()
     # model, data = heart()
     # model, data = kidney()
-    model, data = krkp()
+    # model, data = krkp()
     # model, data = mushroom()
     # model, data = sonar()
     # model, data = voting()
@@ -22,6 +22,8 @@ def main():
     # model, data = adult()
     # model, data = credit_card()
     # model, data = rain()
+    # model, data = claim()
+    # model, data = heloc()
 
     data_train, data_test = split_data(data, ratio=0.8, rand=True)
 
@@ -29,7 +31,7 @@ def main():
     X_test,  Y_test = split_xy(data_test)
 
     start = timer()
-    model.fit(X_train, Y_train, ratio=0.5)
+    model.fit(X_train, Y_train, ratio=0.6)
     end = timer()
 
     model.print_asp()
@@ -41,7 +43,9 @@ def main():
     k = 1
     for i in range(len(X_test)):
         print('Explanation for example number', k, ':')
-        model.explain(X_test[i], all_flag=False)
+        print(model.explain(X_test[i], all_flag=False))
+        print('Proof Trees for example number', k, ':')
+        print(model.proof(X_test[i], all_flag=False))
         k += 1
 
 

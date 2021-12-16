@@ -1,5 +1,5 @@
 from utils import load_data, split_xy, split_X_by_Y, \
-    split_data, get_scores, justify_data, decode_rules
+    split_data, get_scores, justify_data, decode_rules, proof_tree
 from algo import fold, predict, classify, flatten_rules, justify, rebut
 import pickle
 
@@ -41,24 +41,48 @@ class Classifier:
             print(r)
 
     def explain(self, x, all_flag=False):
+        ret = ''
         self.asp()
         all_pos = justify(self.frs, x, all_flag=all_flag)
         k = 1
         if len(all_pos) == 0:
             all_neg = rebut(self.frs, x)
             for rs in all_neg:
-                print('rebuttal ', k, ':')
+                ret += 'rebuttal ' + str(k) + ':\n'
                 for r in decode_rules(rs, attrs=self.attrs, x=x):
-                    print(r)
-                print(justify_data(rs, x, attrs=self.attrs), '\n')
+                    ret += r + '\n'
+                ret += str(justify_data(rs, x, attrs=self.attrs)) + '\n'
                 k += 1
         else:
             for rs in all_pos:
-                print('answer ', k, ':')
+                ret += 'answer ' + str(k) + ':\n'
                 for r in decode_rules(rs, attrs=self.attrs, x=x):
-                    print(r)
-                print(justify_data(rs, x, attrs=self.attrs), '\n')
+                    ret += r + '\n'
+                ret += str(justify_data(rs, x, attrs=self.attrs)) + '\n'
                 k += 1
+        return ret
+
+    def proof(self, x, all_flag=False):
+        ret = ''
+        self.asp()
+        all_pos = justify(self.frs, x, all_flag=all_flag)
+        k = 1
+        if len(all_pos) == 0:
+            all_neg = rebut(self.frs, x)
+            for rs in all_neg:
+                ret += 'rebuttal ' + str(k) + ':\n'
+                for r in proof_tree(rs, attrs=self.attrs, x=x):
+                    ret += r
+                ret += str(justify_data(rs, x, attrs=self.attrs)) + '\n'
+                k += 1
+        else:
+            for rs in all_pos:
+                ret += 'answer ' + str(k) + ':\n'
+                for r in proof_tree(rs, attrs=self.attrs, x=x):
+                    ret += r
+                ret += str(justify_data(rs, x, attrs=self.attrs)) + '\n'
+                k += 1
+        return ret
 
 
 def save_model_to_file(model, file):
