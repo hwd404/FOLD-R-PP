@@ -157,17 +157,13 @@ def decode_rules(rules, attrs, x=None):
     return ret
 
 
-def proof_tree(rules, attrs, x=None):
+def proof_tree(rules, attrs, x):
     ret = []
     nr = {'<=': '>', '>': '<=', '==': '!=', '!=': '=='}
 
     def _f1(it):
-        prefix, suffix, not_suffix = '', '', ''
         if isinstance(it, tuple) and len(it) == 3:
-            if x is not None:
-                prefix = '[T]' if evaluate(it, x) else '[F]'
-                # suffix = ''
-                suffix = ' DOES HOLD' if prefix == '[T]' else ' DOES NOT HOLD '
+            suffix = ' (DOES HOLD) ' if evaluate(it, x) else ' (DOES NOT HOLD) '
             i, r, v = it[0], it[1], it[2]
             if i < -1:
                 i = -i - 2
@@ -186,22 +182,14 @@ def proof_tree(rules, attrs, x=None):
                 else:
                     return 'the value of ' + k + ' is ' + str(x[i]) + ' which should be greater than ' + str(round(v, 3)) + suffix
         elif it == -1:
-            if x is not None:
-                prefix = '[T]' if justify_one(rules, x, it)[0] else '[F]'
-            if prefix == '[T]':
-                return attrs[-1] + ' DOES HOLD '
-            else:
-                return attrs[-1] + ' DOES NOT HOLD '
+            suffix = ' DOES HOLD ' if justify_one(rules, x, it)[0] else ' DOES NOT HOLD '
+            return attrs[-1] + suffix
         else:
-            if x is not None:
-                if it not in [r[0] for r in rules]:
-                    prefix = '[U]'
-                else:
-                    prefix = '[T]' if justify_one(rules, x, it)[0] else '[F]'
-            if prefix == '[T]':
-                return 'exception ab' + str(abs(it) - 1) + ' DOES HOLD '
+            if it not in [r[0] for r in rules]:
+                suffix = ''
             else:
-                return 'exception ab' + str(abs(it) - 1) + ' DOES NOT HOLD '
+                suffix = ' DOES HOLD ' if justify_one(rules, x, it)[0] else ' DOES NOT HOLD '
+            return 'exception ab' + str(abs(it) - 1) + suffix
 
     def _f3(rule, indent=0):
         head = '\t' * indent + _f1(rule[0]) + 'because \n'
@@ -234,3 +222,5 @@ def num_predicates(rules):
     for r in rules:
         ret += _n_pred(r)
     return ret
+
+

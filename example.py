@@ -3,6 +3,7 @@ from timeit import default_timer as timer
 from datetime import timedelta
 
 
+
 def example():
     attrs = ['age', 'bp', 'sg', 'al', 'su', 'rbc', 'pc', 'pcc', 'ba', 'bgr', 'bu', 'sc', 'sod', 'pot', 'hemo', 'pcv',
              'wbcc', 'rbcc', 'htn', 'dm', 'cad', 'appet', 'pe', 'ane']
@@ -50,8 +51,14 @@ def titanic():
     k = 1
     for i in range(len(X_test)):
         print('Explanation for example number', k, ':')
-        model.explain(X_test[i], all_flag=True)
+        print(model.explain(X_test[i], all_flag=True))
+        print('Proof Trees for example number', k, ':')
+        print(model.proof(X_test[i], all_flag=False))
         k += 1
+
+
+    # print('Translation for rules:')
+    # print(model.translate('data/titanic/template.txt'))
 
 
 if __name__ == '__main__':
