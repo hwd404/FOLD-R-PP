@@ -254,12 +254,12 @@ Here is the justification for a passenger in the titanic example above (note tha
 
 All the resources of s(CASP) can be found at https://gitlab.software.imdea.org/ciao-lang/sCASP.
 
-<!-- ## Citation
+## Citation
 
 <code>
 	
 	@misc{wang2021foldr,
-	      title={FOLD-R++: A Toolset for Automated Inductive Learning of Default Theories from Mixed Data}, 
+	      title={FOLD-R++: A Scalable Toolset for Automated Inductive Learning of Default Theories from Mixed Data}, 
 	      author={Huaduo Wang and Gopal Gupta},
 	      year={2021},
 	      eprint={2110.07843},
@@ -280,6 +280,3 @@ All the resources of s(CASP) can be found at https://gitlab.software.imdea.org/c
 	}
 
 </code>
-
-	
- -->
