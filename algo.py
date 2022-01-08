@@ -1,10 +1,10 @@
-import numpy as np
+import math
 
 
 def evaluate(rule, x):
-    def _func(i, r, v):
+    def __eval(i, r, v):
         if i < -1:
-            return _func(-i - 2, r, v) ^ 1
+            return __eval(-i - 2, r, v) ^ 1
         if isinstance(v, str):
             if r == '==':
                 return x[i] == v
@@ -23,14 +23,14 @@ def evaluate(rule, x):
 
     def _eval(i):
         if len(i) == 3:
-            return _func(i[0], i[1], i[2])
+            return __eval(i[0], i[1], i[2])
         elif len(i) == 4:
             return evaluate(i, x)
 
     if len(rule) == 0:
         return 0
     if len(rule) == 3:
-        return _func(rule[0], rule[1], rule[2])
+        return __eval(rule[0], rule[1], rule[2])
     if rule[3] == 0 and not all([_eval(i) for i in rule[1]]):
         return 0
     if rule[3] == 1 and not any([_eval(i) for i in rule[1]]):
@@ -62,13 +62,13 @@ def ig(tp, fn, tn, fp):
     tot_p, tot_n = float(tp + fp), float(tn + fn)
     tot = float(tot_p + tot_n)
     if tp > 0:
-        ret += tp / tot * np.log(tp / tot_p)
+        ret += tp / tot * math.log(tp / tot_p)
     if fp > 0:
-        ret += fp / tot * np.log(fp / tot_p)
+        ret += fp / tot * math.log(fp / tot_p)
     if tn > 0:
-        ret += tn / tot * np.log(tn / tot_n)
+        ret += tn / tot * math.log(tn / tot_n)
     if fn > 0:
-        ret += fn / tot * np.log(fn / tot_n)
+        ret += fn / tot * math.log(fn / tot_n)
     return ret
 
 
@@ -78,27 +78,25 @@ def best_ig(X_pos, X_neg, i, used_items=[]):
     xs, cs = set(), set()
 
     for d in X_pos:
-        if pos.get(d[i]) is None:
+        if d[i] not in pos:
             pos[d[i]], neg[d[i]] = 0, 0
+        pos[d[i]] += 1.0
         if isinstance(d[i], str):
             cs.add(d[i])
-            pos[d[i]] += 1.0
             cp += 1.0
         else:
             xs.add(d[i])
-            pos[d[i]] += 1.0
             xp += 1.0
 
     for d in X_neg:
-        if neg.get(d[i]) is None:
+        if d[i] not in neg:
             pos[d[i]], neg[d[i]] = 0, 0
+        neg[d[i]] += 1.0
         if isinstance(d[i], str):
             cs.add(d[i])
-            neg[d[i]] += 1.0
             cn += 1.0
         else:
             xs.add(d[i])
-            neg[d[i]] += 1.0
             xn += 1.0
 
     xs = list(xs)
@@ -110,26 +108,28 @@ def best_ig(X_pos, X_neg, i, used_items=[]):
     best, v, r = float('-inf'), float('-inf'), ''
 
     for x in xs:
-        if (i, '<=', x) not in used_items and (i, '>', x) not in used_items:
-            ifg = ig(pos[x], xp - pos[x] + cp, xn - neg[x] + cn, neg[x])
-            if best < ifg:
-                best, v, r = ifg, x, '<='
-            ifg = ig(xp - pos[x], pos[x] + cp, neg[x] + cn, xn - neg[x])
-            if best < ifg:
-                best, v, r = ifg, x, '>'
+        if (i, '<=', x) in used_items or (i, '>', x) in used_items:
+            continue
+        ifg = ig(pos[x], xp - pos[x] + cp, xn - neg[x] + cn, neg[x])
+        if best < ifg:
+            best, v, r = ifg, x, '<='
+        ifg = ig(xp - pos[x], pos[x] + cp, neg[x] + cn, xn - neg[x])
+        if best < ifg:
+            best, v, r = ifg, x, '>'
 
     for c in cs:
-        if (i, '==', c) not in used_items and (i, '!=', c) not in used_items:
-            ifg = ig(pos[c], cp - pos[c] + xp, cn - neg[c] + xn, neg[c])
-            if best < ifg:
-                best, v, r = ifg, c, '=='
-            ifg = ig(cp - pos[c] + xp, pos[c], neg[c], cn - neg[c] + xn)
-            if best < ifg:
-                best, v, r = ifg, c, '!='
+        if (i, '==', c) in used_items or (i, '!=', c) in used_items:
+            continue
+        ifg = ig(pos[c], cp - pos[c] + xp, cn - neg[c] + xn, neg[c])
+        if best < ifg:
+            best, v, r = ifg, c, '=='
+        ifg = ig(cp - pos[c] + xp, pos[c], neg[c], cn - neg[c] + xn)
+        if best < ifg:
+            best, v, r = ifg, c, '!='
     return best, r, v
 
 
-def best_feat(X_pos, X_neg, used_items=[]):
+def best_item(X_pos, X_neg, used_items=[]):
     if len(X_pos) == 0 and len(X_neg) == 0:
         return -1, '', ''
     n = len(X_pos[0]) if len(X_pos) > 0 else len(X_neg[0])
@@ -159,7 +159,7 @@ def learn_rule(X_pos, X_neg, used_items=[], ratio=0.5):
     items = []
     flag = False
     while True:
-        t = tuple(best_feat(X_pos, X_neg, used_items + items))
+        t = tuple(best_item(X_pos, X_neg, used_items + items))
         items.append(t)
         rule = (-1, items, [], 0)
         X_tp = [X_pos[i] for i in range(len(X_pos)) if cover(rule, X_pos[i], 1)]

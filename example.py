@@ -1,7 +1,7 @@
 from foldrpp import *
 from timeit import default_timer as timer
 from datetime import timedelta
-
+from datasets import *
 
 
 def example():
@@ -20,7 +20,6 @@ def example():
     end = timer()
 
     save_model_to_file(model, 'example.model')
-
     print('% load model from file then print asp rules')
     model2 = load_model_from_file('example.model')
 
@@ -32,13 +31,8 @@ def example():
     print('% foldr++ costs: ', timedelta(seconds=end - start), '\n')
 
 
-def titanic():
-    attrs = ['Sex', 'Age', 'Number_of_Siblings_Spouses', 'Number_Of_Parents_Children', 'Fare', 'Class', 'Embarked']
-    nums = ['Age', 'Number_of_Siblings_Spouses', 'Number_Of_Parents_Children', 'Fare']
-    model = Classifier(attrs=attrs, numeric=nums, label='Survived', pos='0')
-
-    data_train = model.load_data('data/titanic/train.csv')
-    data_test = model.load_data('data/titanic/test.csv')
+def titanic_test():
+    model, data_train, data_test = titanic()
     X_train, Y_train = split_xy(data_train)
     X_test, Y_test = split_xy(data_test)
 
@@ -57,10 +51,6 @@ def titanic():
         k += 1
 
 
-    # print('Translation for rules:')
-    # print(model.translate('data/titanic/template.txt'))
-
-
 if __name__ == '__main__':
-    # example()
-    titanic()
+    example()
+    # titanic_test()

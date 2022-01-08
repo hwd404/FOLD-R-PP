@@ -1,8 +1,8 @@
-import numpy as np
 import random
 import subprocess
 import tempfile
 from foldrpp import *
+from datasets import *
 
 
 def load_data(file, numerics, amount=-1):
@@ -35,7 +35,7 @@ def load_data(file, numerics, amount=-1):
 
 def decode_data(data, attrs, seq=0, label_flag=False):
     ret = []
-    _, n = np.shape(data)
+    n = len(data[0]) if len(data) > 0 else 0
     i = seq
     if label_flag:
         n += 1
@@ -58,7 +58,7 @@ def decode_data(data, attrs, seq=0, label_flag=False):
 
 def load_data_pred(file, numerics, seq=0, label_flag=False, amount=-1):
     data, attrs = load_data(file, numerics=numerics, amount=amount)
-    data_pred = decode_data(data, attrs, seq=seq,label_flag=label_flag)
+    data_pred = decode_data(data, attrs, seq=seq, label_flag=label_flag)
     return data_pred
 
 
@@ -132,13 +132,8 @@ def scasp_query(model, x):
     return res
 
 
-def titanic():
-    attrs = ['Sex', 'Age', 'Number_of_Siblings_Spouses', 'Number_Of_Parents_Children', 'Fare', 'Class', 'Embarked']
-    nums = ['Age', 'Number_of_Siblings_Spouses', 'Number_Of_Parents_Children', 'Fare']
-    model = Classifier(attrs=attrs, numeric=nums, label='Survived', pos='0')
-
-    data_train = model.load_data('data/titanic/train.csv')
-    data_test = model.load_data('data/titanic/test.csv')
+def titanic_test():
+    model, data_train, data_test = titanic()
     X_train, Y_train = split_xy(data_train)
     X_test, Y_test = split_xy(data_test)
 
@@ -154,4 +149,4 @@ def titanic():
 
 
 if __name__ == '__main__':
-    titanic()
+    titanic_test()

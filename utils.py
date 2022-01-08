@@ -172,15 +172,19 @@ def proof_tree(rules, attrs, x):
             if isinstance(v, str):
                 v = v.lower().replace(' ', '_')
                 v = 'null' if len(v) == 0 else '\'' + v + '\''
+            xi = x[i]
+            if isinstance(xi, str):
+                xi = xi.lower().replace(' ', '_')
+                xi = '\'null\'' if len(xi) == 0 else xi
             if r == '==':
-                return 'the value of ' + k + ' is \'' + str(x[i]) + '\' which should equal ' + v + suffix
+                return 'the value of ' + k + ' is \'' + str(xi) + '\' which should equal ' + v + suffix
             elif r == '!=':
-                return 'the value of ' + k + ' is \'' + str(x[i]) + '\' which should not equal ' + v + suffix
+                return 'the value of ' + k + ' is \'' + str(xi) + '\' which should not equal ' + v + suffix
             else:
                 if r == '<=':
-                    return 'the value of ' + k + ' is ' + str(x[i]) + ' which should be less equal to ' + str(round(v, 3)) + suffix
+                    return 'the value of ' + k + ' is ' + str(xi) + ' which should be less equal to ' + str(round(v, 3)) + suffix
                 else:
-                    return 'the value of ' + k + ' is ' + str(x[i]) + ' which should be greater than ' + str(round(v, 3)) + suffix
+                    return 'the value of ' + k + ' is ' + str(xi) + ' which should be greater than ' + str(round(v, 3)) + suffix
         elif it == -1:
             suffix = ' DOES HOLD ' if justify_one(rules, x, it)[0] else ' DOES NOT HOLD '
             return attrs[-1] + suffix
@@ -191,7 +195,7 @@ def proof_tree(rules, attrs, x):
                 suffix = ' DOES HOLD ' if justify_one(rules, x, it)[0] else ' DOES NOT HOLD '
             return 'exception ab' + str(abs(it) - 1) + suffix
 
-    def _f3(rule, indent=0):
+    def _f2(rule, indent=0):
         head = '\t' * indent + _f1(rule[0]) + 'because \n'
         body = ''
         for i in list(rule[1]):
@@ -199,11 +203,8 @@ def proof_tree(rules, attrs, x):
         tail = ''
         for i in list(rule[2]):
             for r in rules:
-                if i != r[0]:
-                    continue
-                else:
-                    t = _f3(r, indent + 1)
-                    tail = tail + t
+                if i == r[0]:
+                    tail = tail + _f2(r, indent + 1)
         _ret = head + body + tail
         chars = list(_ret)
         _ret = ''.join(chars)
@@ -211,7 +212,7 @@ def proof_tree(rules, attrs, x):
 
     for _r in rules:
         if _r[0] == -1:
-            ret.append(_f3(_r))
+            ret.append(_f2(_r))
     return ret
 
 

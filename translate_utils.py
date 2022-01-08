@@ -1,4 +1,15 @@
-from algo import evaluate, justify_one, justify, rebut
+# This file only provide two functions "translate_rules" and "translate_proof"
+# if you need to use these two functions:
+# ------------------------------------------------------------
+# from translate_utils import translate_rules, translate_proof
+# print(translate_rules(model, file='path to template'))
+# for x in X:
+#     print(translate_proof(model, x, file='path to template'))
+# ------------------------------------------------------------
+# Please find more examples in main and titanic_test functions in this file.
+
+
+from algo import evaluate, justify_one
 from foldrpp import *
 from datasets import *
 from timeit import default_timer as timer
@@ -75,11 +86,11 @@ def translate(rules, attrs, tmpl={}):
                 return s
             s = s.replace('@(' + para[0] + ')', 'X').replace('@(' + para[1] + ')', 'N' + str(i))
             if r == '!=':
-                s = s + ', where N' + str(i) + ' is not ' + v
+                s = s + ' where N' + str(i) + ' is not ' + v
             elif r == '<=':
-                s = s + ', where N' + str(i) + ' is less equal to ' + str(round(v, 3))
+                s = s + ' where N' + str(i) + ' is less equal to ' + str(round(v, 3))
             else:
-                s = s + ', where N' + str(i) + ' is greater than ' + str(round(v, 3))
+                s = s + ' where N' + str(i) + ' is greater than ' + str(round(v, 3))
             return s
 
     def _f1(it):
@@ -120,11 +131,8 @@ def translate(rules, attrs, tmpl={}):
         tail = ''
         for i in list(rule[2]):
             for r in rules:
-                if i != r[0]:
-                    continue
-                else:
-                    t = '\t' * (indent + 1) + _f1(i) + ' is False and\n'
-                    tail = tail + t
+                if i == r[0]:
+                    tail = tail + '\t' * (indent + 1) + _f1(i) + ' is False and\n'
         _ret = head + body + tail
         chars = list(_ret)
         _ret = ''.join(chars)
@@ -172,11 +180,11 @@ def proof_trans(rules, attrs, x, tmpl={}):
                 return s
             s = s.replace('@(' + para[0] + ')', 'X').replace('@(' + para[1] + ')', 'N' + str(i))
             if r == '!=':
-                s = s + ', where N' + str(i) + ' is not ' + v
+                s = s + ' where N' + str(i) + ' is not ' + v
             elif r == '<=':
-                s = s + ', where N' + str(i) + ' is less equal to ' + str(round(v, 3))
+                s = s + ' where N' + str(i) + ' is less equal to ' + str(round(v, 3))
             else:
-                s = s + ', where N' + str(i) + ' is greater than ' + str(round(v, 3))
+                s = s + ' where N' + str(i) + ' is greater than ' + str(round(v, 3))
             return s
 
     def _f2(i, r, v):
@@ -243,7 +251,7 @@ def proof_trans(rules, attrs, x, tmpl={}):
             if i < -1:
                 i = -i - 2
                 r = nr[r]
-            return 'LITERAL ' + _f0(i, r, v)
+            return '' + _f0(i, r, v)
         elif it == -1:
             suffix = ' DOES HOLD ' if justify_one(rules, x, it)[0] else ' DOES NOT HOLD '
             heads = attrs[-1].split('(')
@@ -281,11 +289,8 @@ def proof_trans(rules, attrs, x, tmpl={}):
         tail = ''
         for i in list(rule[2]):
             for r in rules:
-                if i != r[0]:
-                    continue
-                else:
-                    t = _f3(r, indent + 1)
-                    tail = tail + t
+                if i == r[0]:
+                    tail = tail + _f3(r, indent + 1)
         _ret = head + body + tail
         chars = list(_ret)
         _ret = ''.join(chars)
@@ -335,13 +340,8 @@ def translate_proof(model, x, all_flag=False, file=None):
     return ret
 
 
-def titanic():
-    attrs = ['Sex', 'Age', 'Number_of_Siblings_Spouses', 'Number_Of_Parents_Children', 'Fare', 'Class', 'Embarked']
-    nums = ['Age', 'Number_of_Siblings_Spouses', 'Number_Of_Parents_Children', 'Fare']
-    model = Classifier(attrs=attrs, numeric=nums, label='Survived', pos='0')
-
-    data_train = model.load_data('data/titanic/train.csv')
-    data_test = model.load_data('data/titanic/test.csv')
+def titanic_test():
+    model, data_train, data_test = titanic()
     X_train, Y_train = split_xy(data_train)
     X_test, Y_test = split_xy(data_test)
 
@@ -350,13 +350,10 @@ def titanic():
     model.print_asp()
     acc, p, r, f1 = get_scores(Y_test_hat, Y_test)
     print('% acc', round(acc, 4), 'p', round(p, 4), 'r', round(r, 4), 'f1', round(f1, 4), '\n')
-
+    print(translate_rules(model, file='data/titanic/template.txt'))
+    # exit()
     k = 1
     for i in range(len(X_test)):
-        # print('Explanation for example number', k, ':')
-        # print(model.explain(X_test[i], all_flag=True))
-        # print('Proof Trees for example number', k, ':')
-        # print(model.proof(X_test[i], all_flag=False))
         print('Proof Trees for example number', k, ':')
         print(translate_proof(model, X_test[i], file='data/titanic/template.txt'))
         k += 1
@@ -396,18 +393,15 @@ def main():
     acc, p, r, f1 = get_scores(Y_test_hat, Y_test)
     print('% acc', round(acc, 4), 'p', round(p, 4), 'r', round(r, 4), 'f1', round(f1, 4))
     print('% foldr++ costs: ', timedelta(seconds=end - start), '\n')
-
+    print(translate_rules(model))
+    # exit()
     k = 1
     for i in range(len(X_test)):
-        # print('Explanation for example number', k, ':')
-        # print(model.explain(X_test[i], all_flag=False))
-        # print('Proof Trees for example number', k, ':')
-        # print(model.proof(X_test[i], all_flag=False))
         print('Proof Trees for example number', k, ':')
         print(translate_proof(model, X_test[i]))
         k += 1
 
 
 if __name__ == '__main__':
-    titanic()
-    # main()
+    # titanic_test()
+    main()
