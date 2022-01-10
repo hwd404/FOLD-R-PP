@@ -108,7 +108,7 @@ def decode_rules(rules, attrs, x=None):
                 not_prefix = '[T]' if prefix == '[F]' else '[F]'
             i, r, v = it[0], it[1], it[2]
             if i < -1:
-                i = -i - 2
+                i = -2 - i
                 r = nr[r]
             k = attrs[i].lower().replace(' ', '_')
             if isinstance(v, str):
@@ -166,7 +166,7 @@ def proof_tree(rules, attrs, x):
             suffix = ' (DOES HOLD) ' if evaluate(it, x) else ' (DOES NOT HOLD) '
             i, r, v = it[0], it[1], it[2]
             if i < -1:
-                i = -i - 2
+                i = -2 - i
                 r = nr[r]
             k = attrs[i].lower().replace(' ', '_')
             if isinstance(v, str):

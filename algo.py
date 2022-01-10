@@ -2,9 +2,10 @@ import math
 
 
 def evaluate(rule, x):
+
     def __eval(i, r, v):
         if i < -1:
-            return __eval(-i - 2, r, v) ^ 1
+            return __eval(-2 - i, r, v) ^ 1
         if isinstance(v, str):
             if r == '==':
                 return x[i] == v
@@ -55,28 +56,23 @@ def predict(rules, X):
     return ret
 
 
-def ig(tp, fn, tn, fp):
+def gain(tp, fn, tn, fp):
     if tp + tn < fp + fn:
         return float('-inf')
     ret = 0
     tot_p, tot_n = float(tp + fp), float(tn + fn)
     tot = float(tot_p + tot_n)
-    if tp > 0:
-        ret += tp / tot * math.log(tp / tot_p)
-    if fp > 0:
-        ret += fp / tot * math.log(fp / tot_p)
-    if tn > 0:
-        ret += tn / tot * math.log(tn / tot_n)
-    if fn > 0:
-        ret += fn / tot * math.log(fn / tot_n)
+    ret += tp / tot * math.log(tp / tot_p) if tp > 0 else 0
+    ret += fp / tot * math.log(fp / tot_p) if fp > 0 else 0
+    ret += tn / tot * math.log(tn / tot_n) if tn > 0 else 0
+    ret += fn / tot * math.log(fn / tot_n) if fn > 0 else 0
     return ret
 
 
-def best_ig(X_pos, X_neg, i, used_items=[]):
+def best_ig(X_pos, X_neg, i):
     xp, xn, cp, cn = 0, 0, 0, 0
     pos, neg = dict(), dict()
     xs, cs = set(), set()
-
     for d in X_pos:
         if d[i] not in pos:
             pos[d[i]], neg[d[i]] = 0, 0
@@ -87,7 +83,6 @@ def best_ig(X_pos, X_neg, i, used_items=[]):
         else:
             xs.add(d[i])
             xp += 1.0
-
     for d in X_neg:
         if d[i] not in neg:
             pos[d[i]], neg[d[i]] = 0, 0
@@ -98,55 +93,47 @@ def best_ig(X_pos, X_neg, i, used_items=[]):
         else:
             xs.add(d[i])
             xn += 1.0
-
     xs = list(xs)
     xs.sort()
     for j in range(1, len(xs)):
         pos[xs[j]] += pos[xs[j - 1]]
         neg[xs[j]] += neg[xs[j - 1]]
-
     best, v, r = float('-inf'), float('-inf'), ''
-
     for x in xs:
-        if (i, '<=', x) in used_items or (i, '>', x) in used_items:
-            continue
-        ifg = ig(pos[x], xp - pos[x] + cp, xn - neg[x] + cn, neg[x])
-        if best < ifg:
-            best, v, r = ifg, x, '<='
-        ifg = ig(xp - pos[x], pos[x] + cp, neg[x] + cn, xn - neg[x])
-        if best < ifg:
-            best, v, r = ifg, x, '>'
-
+        ig = gain(pos[x], xp - pos[x] + cp, xn - neg[x] + cn, neg[x])
+        if best < ig:
+            best, v, r = ig, x, '<='
+        ig = gain(xp - pos[x], pos[x] + cp, neg[x] + cn, xn - neg[x])
+        if best < ig:
+            best, v, r = ig, x, '>'
     for c in cs:
-        if (i, '==', c) in used_items or (i, '!=', c) in used_items:
-            continue
-        ifg = ig(pos[c], cp - pos[c] + xp, cn - neg[c] + xn, neg[c])
-        if best < ifg:
-            best, v, r = ifg, c, '=='
-        ifg = ig(cp - pos[c] + xp, pos[c], neg[c], cn - neg[c] + xn)
-        if best < ifg:
-            best, v, r = ifg, c, '!='
+        ig = gain(pos[c], cp - pos[c] + xp, cn - neg[c] + xn, neg[c])
+        if best < ig:
+            best, v, r = ig, c, '=='
+        ig = gain(cp - pos[c] + xp, pos[c], neg[c], cn - neg[c] + xn)
+        if best < ig:
+            best, v, r = ig, c, '!='
     return best, r, v
 
 
-def best_item(X_pos, X_neg, used_items=[]):
+def best_item(X_pos, X_neg):
+    ret = -1, '', ''
     if len(X_pos) == 0 and len(X_neg) == 0:
-        return -1, '', ''
+        return ret
     n = len(X_pos[0]) if len(X_pos) > 0 else len(X_neg[0])
-    _best = float('-inf')
-    i, r, v = -1, '', ''
-    for _i in range(n):
-        bg, _r, _v = best_ig(X_pos, X_neg, _i, used_items)
-        if _best < bg:
-            _best = bg
-            i, r, v = _i, _r, _v
-    return i, r, v
+    best = float('-inf')
+    for i in range(n):
+        ig, r, v = best_ig(X_pos, X_neg, i)
+        if best < ig:
+            best = ig
+            ret = i, r, v
+    return ret
 
 
-def fold(X_pos, X_neg, used_items=[], ratio=0.5):
+def fold(X_pos, X_neg, ratio=0.5):
     ret = []
     while len(X_pos) > 0:
-        rule = learn_rule(X_pos, X_neg, used_items, ratio)
+        rule = learn_rule(X_pos, X_neg, ratio)
         tp = [i for i in range(len(X_pos)) if cover(rule, X_pos[i], 1)]
         X_pos = [X_pos[i] for i in range(len(X_pos)) if i not in set(tp)]
         if len(tp) == 0:
@@ -155,26 +142,25 @@ def fold(X_pos, X_neg, used_items=[], ratio=0.5):
     return ret
 
 
-def learn_rule(X_pos, X_neg, used_items=[], ratio=0.5):
+def learn_rule(X_pos, X_neg, ratio=0.5):
     items = []
     flag = False
     while True:
-        t = tuple(best_item(X_pos, X_neg, used_items + items))
+        t = best_item(X_pos, X_neg)
         items.append(t)
         rule = (-1, items, [], 0)
         X_tp = [X_pos[i] for i in range(len(X_pos)) if cover(rule, X_pos[i], 1)]
         X_fp = [X_neg[i] for i in range(len(X_neg)) if cover(rule, X_neg[i], 1)]
         if t[0] == -1 or len(X_fp) <= len(X_tp) * ratio:
             if t[0] == -1:
-                items.pop()
-                rule = (-1, items, [], 0)
+                rule = (-1, items[:-1], [], 0)
             if len(X_fp) > 0 and t[0] != -1:
                 flag = True
             break
         X_pos = X_tp
         X_neg = X_fp
     if flag:
-        ab = fold(X_fp, X_tp, used_items + items, ratio)
+        ab = fold(X_fp, X_tp, ratio)
         if len(ab) > 0:
             rule = (rule[0], rule[1], ab, 0)
     return rule
@@ -190,9 +176,9 @@ def flatten_rules(rules):
         if isinstance(i, tuple) and len(i) == 3:
             return i
         elif isinstance(i, tuple):
-            return _func(i)
+            return _flatten(i)
 
-    def _func(rule, root=False):
+    def _flatten(rule, root=False):
         t = (tuple(rule[1]), tuple([_eval(i) for i in rule[2]]))
         if t not in rule_map:
             rule_map[t] = -1 if root else flatten_rules.ab
@@ -201,14 +187,13 @@ def flatten_rules(rules):
                 ret.append((_ret, t[0], t[1]))
             else:
                 abrules.append((_ret, t[0], t[1]))
-            if not root:
                 flatten_rules.ab -= 1
         elif root:
             ret.append((rule[0], t[0], t[1]))
         return rule_map[t]
 
     for r in rules:
-        _func(r, root=True)
+        _flatten(r, root=True)
     return ret + abrules
 
 
