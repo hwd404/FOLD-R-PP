@@ -157,6 +157,45 @@ def decode_rules(rules, attrs, x=None):
     return ret
 
 
+def zip_rule(rule):
+    tab, dft = {}, []
+    for i in rule[1]:
+        if isinstance(i[2], str):
+            dft.append(i)
+        else:
+            if i[0] not in tab:
+                tab[i[0]] = []
+            if i[1] == '<=':
+                tab[i[0]].append([float('-inf'), i[2]])
+            else:
+                tab[i[0]].append([i[2], float('inf')])
+    nums = [t for t in tab]
+    nums.sort()
+    for i in nums:
+        left, right = float('inf'), float('-inf')
+        for j in tab[i]:
+            if j[0] == float('-inf'):
+                left = min(left, j[1])
+            else:
+                right = max(right, j[0])
+        if left == float('inf'):
+            dft.append((i, '>', right))
+        elif right == float('-inf'):
+            dft.append((i, '<=', left))
+        else:
+            dft.append((i, '>', right))
+            dft.append((i, '<=', left))
+    return rule[0], dft, rule[2], 0
+
+
+def simplify_rule(rule):
+    head, body = rule.split(' :- ')
+    items = body.split(', ')
+    items = list(dict.fromkeys(items))
+    body = ', '.join(items)
+    return head + ' :- ' + body
+
+
 def proof_tree(rules, attrs, x):
     ret = []
     nr = {'<=': '>', '>': '<=', '==': '!=', '!=': '=='}

@@ -148,25 +148,20 @@ def fold(X_pos, X_neg, used_items=[], ratio=0.5):
 
 def learn_rule(X_pos, X_neg, used_items=[], ratio=0.5):
     items = []
-    flag = False
     while True:
         t = best_item(X_pos, X_neg, used_items + items)
         items.append(t)
-        rule = (-1, items, [], 0)
-        X_tp = [X_pos[i] for i in range(len(X_pos)) if cover(rule, X_pos[i], 1)]
-        X_fp = [X_neg[i] for i in range(len(X_neg)) if cover(rule, X_neg[i], 1)]
-        if t[0] == -1 or len(X_fp) <= len(X_tp) * ratio:
+        rule = -1, items, [], 0
+        X_pos = [X_pos[i] for i in range(len(X_pos)) if cover(rule, X_pos[i], 1)]
+        X_neg = [X_neg[i] for i in range(len(X_neg)) if cover(rule, X_neg[i], 1)]
+        if t[0] == -1 or len(X_neg) <= len(X_pos) * ratio:
             if t[0] == -1:
-                rule = (-1, items[:-1], [], 0)
-            if len(X_fp) > 0 and t[0] != -1:
-                flag = True
+                rule = -1, items[:-1], [], 0
+            if len(X_neg) > 0 and t[0] != -1:
+                ab = fold(X_neg, X_pos, used_items + items, ratio)
+                if len(ab) > 0:
+                    rule = rule[0], rule[1], ab, 0
             break
-        X_pos = X_tp
-        X_neg = X_fp
-    if flag:
-        ab = fold(X_fp, X_tp, used_items + items, ratio)
-        if len(ab) > 0:
-            rule = (rule[0], rule[1], ab, 0)
     return rule
 
 

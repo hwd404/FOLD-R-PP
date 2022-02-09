@@ -1,5 +1,5 @@
 from utils import load_data, split_xy, split_X_by_Y, \
-    split_data, get_scores, justify_data, decode_rules, proof_tree
+    split_data, get_scores, justify_data, decode_rules, proof_tree, zip_rule, simplify_rule
 from algo import fold, predict, classify, flatten_rules, justify, rebut
 import pickle
 
@@ -14,6 +14,7 @@ class Classifier:
         self.frs = None
         self.asp_rules = None
         self.seq = 1
+        self.simple = None
         self.translation = None
 
     def load_data(self, file, amount=-1):
@@ -30,14 +31,18 @@ class Classifier:
     def classify(self, x):
         return classify(self.rules, x)
 
-    def asp(self):
-        if self.asp_rules is None and self.rules is not None:
+    def asp(self, simple=False):
+        if (self.asp_rules is None and self.rules is not None) or self.simple != simple:
+            self.simple = simple
             self.frs = flatten_rules(self.rules)
+            self.frs = [zip_rule(r) for r in self.frs]
             self.asp_rules = decode_rules(self.frs, self.attrs)
+            if simple:
+                self.asp_rules = [simplify_rule(r) for r in self.asp_rules]
         return self.asp_rules
 
-    def print_asp(self):
-        for r in self.asp():
+    def print_asp(self, simple=False):
+        for r in self.asp(simple):
             print(r)
 
     def explain(self, x, all_flag=False):
