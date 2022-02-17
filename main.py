@@ -22,10 +22,11 @@ def main():
     # model, data = adult()
     # model, data = credit_card()
     # model, data = rain()
+    # model, data = heloc()
     # model, data = parkison()
 
-    data_train, data_test = split_data(data, ratio=0.8, rand=True)
-    # 80% as training data, 20% as test data. shuffle data first when rand is True
+    data_train, data_test = split_data(data, ratio=0.8, rand=True)  
+    # line 28: 80% as training data, 20% as test data. shuffle data first when rand is True
 
     # model, data_train, data_test = titanic()
     # model, data_train, data_test = avila()
@@ -35,13 +36,12 @@ def main():
     X_test,  Y_test = split_xy(data_test)
 
     start = timer()
-    model.fit(X_train, Y_train, ratio=0.5)
-    # ratio means # of exception examples / # of default examples a rule can imply = 0.5
-    
+    model.fit(X_train, Y_train, ratio=0.5)  
+    # line 39: ratio means # of exception examples / # of default examples a rule can imply = 0.5  
     end = timer()
+
     model.print_asp(simple=True)
-    # print simplified rules when simple is True, default value is False
-    
+    # line 43: output simplified rules when simple is True, default value is False
     Y_test_hat = model.predict(X_test)
     acc, p, r, f1 = get_scores(Y_test_hat, Y_test)
     print('% acc', round(acc, 4), 'p', round(p, 4), 'r', round(r, 4), 'f1', round(f1, 4))
