@@ -2,10 +2,19 @@
 The implementation details of FOLD-R++ algorithm and how to use it are described here. The target of FOLD-R++ algorithm is to learn an answer set program for a classification task. Answer set programs are logic programs that permit negation of predicates and follow the stable model semantics for interpretation. The rules generated are essentially default rules. Default rules (with exceptions) closely model human thinking.
 
 ## Installation
+Only function library:
 
 <code>
 	
 	python3 -m pip install foldrpp
+	
+</code>
+
+With the dataset examples:
+
+<code>
+	
+	git clone https://github.com/hwd404/FOLD-R-PP.git
 	
 </code>
 
