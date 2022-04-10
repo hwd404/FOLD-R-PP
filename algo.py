@@ -138,10 +138,10 @@ def fold(X_pos, X_neg, used_items=[], ratio=0.5):
     ret = []
     while len(X_pos) > 0:
         rule = learn_rule(X_pos, X_neg, used_items, ratio)
-        tp = [i for i in range(len(X_pos)) if cover(rule, X_pos[i], 1)]
-        X_pos = [X_pos[i] for i in range(len(X_pos)) if i not in set(tp)]
-        if len(tp) == 0:
+        X_fn = [X_pos[i] for i in range(len(X_pos)) if not cover(rule, X_pos[i], 1)]
+        if len(X_pos) == len(X_fn):
             break
+        X_pos = X_fn
         ret.append(rule)
     return ret
 
