@@ -341,18 +341,31 @@ All the resources of s(CASP) can be found at https://gitlab.software.imdea.org/c
 	
 </code>
 <code>
+	
+	@misc{https://doi.org/10.48550/arxiv.2202.06913,
+	      doi = {10.48550/ARXIV.2202.06913},
+	      url = {https://arxiv.org/abs/2202.06913},
+	      author = {Wang, Huaduo and Shakerin, Farhad and Gupta, Gopal},
+	      keywords = {Machine Learning (cs.LG), FOS: Computer and information sciences, FOS: Computer and information sciences},
+	      title = {FOLD-RM: A Scalable, Efficient, and Explainable Inductive Learning Algorithm for Multi-Category Classification of Mixed Data},
+	      publisher = {arXiv},
+	      year = {2022},
+	      copyright = {arXiv.org perpetual, non-exclusive license}
+	}
+	
+</code>
+<code>
 
 	@article{DBLP:journals/corr/abs-1804-11162,
-		author={Joaqu{\'{\i}}n Arias and Manuel Carro and Elmer Salazar and Kyle Marple and Gopal Gupta},
-		title={Constraint Answer Set Programming without Grounding},
-		journal={CoRR},
-		volume={abs/1804.11162},
-		year={2018},
-		url={http://arxiv.org/abs/1804.11162}
+	      author={Joaqu{\'{\i}}n Arias and Manuel Carro and Elmer Salazar and Kyle Marple and Gopal Gupta},
+	      title={Constraint Answer Set Programming without Grounding},
+	      journal={CoRR},
+	      volume={abs/1804.11162},
+	      year={2018},
+	      url={http://arxiv.org/abs/1804.11162}
 	}
 
 </code>
-
 ## Acknowledgement
 	
 Authors gratefully acknowledge support from NSF grants IIS 1718945, IIS 1910131, IIP 1916206, and from Amazon Corp, Atos Corp and US DoD.
