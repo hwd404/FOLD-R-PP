@@ -350,7 +350,6 @@ All the resources of s(CASP) can be found at https://gitlab.software.imdea.org/c
 	      title = {FOLD-RM: A Scalable, Efficient, and Explainable Inductive Learning Algorithm for Multi-Category Classification of Mixed Data},
 	      publisher = {arXiv},
 	      year = {2022},
-	      copyright = {arXiv.org perpetual, non-exclusive license}
 	}
 	
 </code>
