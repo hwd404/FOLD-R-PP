@@ -27,7 +27,7 @@ This FOLD-R++ implementation is developed with only python3. No library is neede
     |   2   |   7   |  50   |  ...  |  no   |   ckd   |
     |  ...  |  ...  |  ...  |  ...  |  ...  |   ...   |
 2. FOLD-R++ does not have to encode data like one-hot or integer encoding. It can deal with numerical, categorical, and even mixed-type features (one feature contains categorical and numerical values at same time) directly. The types of features should be identified before loading data:
-   + numerical features will be dealt as mixed-type features in this implementation. Group them together as numerical features, they will have in/equality and numerical comparison literals as candidates (=, !=, <=, >).
+   + numerical features will be dealt as mixed-type features in this implementation. Group them together as numerical features, they will have in/equality (=, !=) and numerical comparison (<=, >) literals as candidates.
    + categorical features will only have in/equality literals as candidates (only literals with = and != would be generated).
 
 Many UCI dataset are included as examples in **data** directory. Their data preparation are listed in **datasets.py**. For example the UCI kidney dataset can be loaded with the following configuration:
