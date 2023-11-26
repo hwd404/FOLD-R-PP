@@ -1,5 +1,5 @@
 # FOLD-R-PP
-This is a python implementation of FOLD-R++ algorithm which is built for binary classification tasks. FOLD-R++ algorithm learns default rules that is represented as an [answer set program](https://en.wikipedia.org/wiki/Answer_set_programming) which is a [logic program](https://en.wikipedia.org/wiki/Logic_programming) that include [negation of predicates](https://en.wikipedia.org/wiki/Negation) and follow the [stable model semantics](https://en.wikipedia.org/wiki/Stable_model_semantics) for interpretation. [Default logic](https://en.wikipedia.org/wiki/Default_logic) (with exceptions) closely model human thinking.
+This is a Python implementation of FOLD-R++ algorithm which is built for binary classification tasks. FOLD-R++ algorithm learns default rules that is represented as an [answer set program](https://en.wikipedia.org/wiki/Answer_set_programming) which is a [logic program](https://en.wikipedia.org/wiki/Logic_programming) that include [negation of predicates](https://en.wikipedia.org/wiki/Negation) and follow the [stable model semantics](https://en.wikipedia.org/wiki/Stable_model_semantics) for interpretation. [Default logic](https://en.wikipedia.org/wiki/Default_logic) (with exceptions) closely models human thinking.
 
 ## Installation
 Only function library:
@@ -65,8 +65,7 @@ output:
 label(X,'ckd') :- sc(X,N1), N1>1.2.
 label(X,'ckd') :- sg(X,N2), N2=<1.015.
 label(X,'ckd') :- hemo(X,N3), N3=<12.7.
-label(X,'ckd') :- pcv(X,'?'), not al(X,'0').
-label(X,'ckd') :- dm(X,'yes').
+label(X,'ckd') :- not al(X,'0'), not al(X,'?').
 ```
 
 ### Testing
@@ -124,12 +123,7 @@ A trained model can be saved to a json file with **save_model_to_file** function
     }, 
     {
       "head": ["label", "==", "ckd"], 
-      "main_items": [["pcv", "==", "?"], ["al", "!=", "0"]], 
-      "ab_items": []
-    }, 
-    {
-      "head": ["label", "==", "ckd"], 
-      "main_items": [["dm", "==", "yes"]], 
+      "main_items": [["al", "!=", "0"], ["al", "!=", "?"]], 
       "ab_items": []
     }
   ], 
@@ -143,7 +137,7 @@ A trained model can be saved to a json file with **save_model_to_file** function
 }
 
 ```
-The generate rules in json file can also be fine-tuned as needed.
+The generated rules in json file can also be fine-tuned as needed.
 	
 ### Explanation and Proof Tree
 
