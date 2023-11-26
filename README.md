@@ -101,32 +101,10 @@ A trained model can be saved to a json file with **save_model_to_file** function
 ``` json 
 {
   "str_attrs": [
-    "al", 
-    "su", 
-    "rbc", 
-    "pc", 
-    "pcc", 
-    "ba", 
-    "htn", 
-    "dm", 
-    "cad", 
-    "appet", 
-    "pe", 
-    "ane"
+    "al", "su", "rbc", "pc", "pcc", "ba", "htn", "dm", "cad", "appet", "pe", "ane"
   ], 
   "num_attrs": [
-    "age", 
-    "bp", 
-    "sg", 
-    "bgr", 
-    "bu", 
-    "sc", 
-    "sod", 
-    "pot", 
-    "hemo", 
-    "pcv", 
-    "wbcc", 
-    "rbcc"
+    "age", "bp", "sg", "bgr", "bu", "sc", "sod", "pot", "hemo", "pcv", "wbcc", "rbcc"
   ], 
   "flat_rules": [
     {
