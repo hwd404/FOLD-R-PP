@@ -40,7 +40,12 @@ model = Foldrpp(str_attrs, num_attrs, label, pos_val)
 data = model.load_data('data/kidney/kidney.csv')
 ```
 
-**str_attrs** lists categorical features, **num_attrs** lists numerical and mixed-type features, **label** is the name of classification label, **pos_val** indicates the positive value of the label, **model** is an initialized classifier object with the configuration of kidney dataset. **Note: For binary classification tasks, the label value with more examples should be selected as the label's positive value**.
+- *str_attrs* lists categorical features, 
+- *num_attrs* lists numerical and mixed-type features, 
+- *label* is the name of classification label, 
+- *pos_val* indicates the positive value of the label, 
+- *model* is an initialized classifier object with the configuration of kidney dataset. 
+- **Note**: For binary classification tasks, the label value with more examples should be selected as the label's positive value.
 
 ### Training
 FOLD-R++ generates an explainable model that is represented by an answer set program for classification tasks. Here's a training example for kidney dataset:
@@ -81,7 +86,7 @@ Accuracy, precision, recall and F1 score:
 acc, p, r, f1 = get_scores(ys_test_hat, ys_test)
 ```
 
-#### The code of the above examples can be found in **main.py**. 
+The code of the above examples can be found in **main.py**. 
 
 ### Save model and Load model
 
