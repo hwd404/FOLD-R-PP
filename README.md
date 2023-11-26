@@ -3,16 +3,14 @@ This is a python implementation of FOLD-R++ algorithm which is built for binary 
 
 ## Installation
 Only function library:
-
-<code>
-	python3 -m pip install foldrpp
-</code>
+``` 
+python3 -m pip install foldrpp
+```
 
 With the dataset examples:
-
-<code>
-	git clone https://github.com/hwd404/FOLD-R-PP.git
-</code>
+``` 
+git clone https://github.com/hwd404/FOLD-R-PP.git
+```
 
 ### Prerequisites
 This FOLD-R++ implementation is developed with only python3. No library is needed.
@@ -35,11 +33,11 @@ This FOLD-R++ implementation is developed with only python3. No library is neede
 Many UCI dataset are included as examples in **data** directory. Their data preparation are listed in **datasets.py**. For example the UCI kidney dataset can be loaded with the following configuration:
 
 ``` python
-    str_attrs = ['al', 'su', 'rbc', 'pc', 'pcc', 'ba', 'htn', 'dm', 'cad', 'appet', 'pe', 'ane']
-    num_attrs = ['age', 'bp', 'sg', 'bgr', 'bu', 'sc', 'sod', 'pot', 'hemo', 'pcv', 'wbcc', 'rbcc']
-    label, pos_val = 'label', 'ckd'
-    model = Foldrpp(str_attrs, num_attrs, label, pos_val)
-    data = model.load_data('data/kidney/kidney.csv')
+str_attrs = ['al', 'su', 'rbc', 'pc', 'pcc', 'ba', 'htn', 'dm', 'cad', 'appet', 'pe', 'ane']
+num_attrs = ['age', 'bp', 'sg', 'bgr', 'bu', 'sc', 'sod', 'pot', 'hemo', 'pcv', 'wbcc', 'rbcc']
+label, pos_val = 'label', 'ckd'
+model = Foldrpp(str_attrs, num_attrs, label, pos_val)
+data = model.load_data('data/kidney/kidney.csv')
 ```
 
 **str_attrs** lists categorical features, **num_attrs** lists numerical and mixed-type features, **label** is the name of classification label, **pos_val** indicates the positive value of the label, **model** is an initialized classifier object with the configuration of kidney dataset. **Note: For binary classification tasks, the label value with more examples should be selected as the label's positive value**.
