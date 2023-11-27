@@ -1,5 +1,5 @@
 # FOLD-R-PP
-This is a Python implementation of FOLD-R++ algorithm which is built for binary classification tasks. FOLD-R++ algorithm learns default rules that is represented as an [answer set program](https://en.wikipedia.org/wiki/Answer_set_programming) which is a [logic program](https://en.wikipedia.org/wiki/Logic_programming) that include [negation of predicates](https://en.wikipedia.org/wiki/Negation) and follow the [stable model semantics](https://en.wikipedia.org/wiki/Stable_model_semantics) for interpretation. [Default logic](https://en.wikipedia.org/wiki/Default_logic) (with exceptions) closely models human thinking.
+This is a Python implementation of FOLD-R++ algorithm which is built for binary classification tasks. FOLD-R++ algorithm learns default rules that are represented as an [answer set program](https://en.wikipedia.org/wiki/Answer_set_programming) which is a [logic program](https://en.wikipedia.org/wiki/Logic_programming) that include [negation of predicates](https://en.wikipedia.org/wiki/Negation) and follow the [stable model semantics](https://en.wikipedia.org/wiki/Stable_model_semantics) for interpretation. [Default logic](https://en.wikipedia.org/wiki/Default_logic) (with exceptions) closely models human thinking.
 
 The previous version that is compatible with s(CASP) can be found in **old_version** directory.
 
